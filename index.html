@@ -439,7 +439,7 @@ canvas { display: block; }
   .btn-primary, .btn-outline { width: 100%; max-width: 280px; }
 }
 
-/* SLIDER */
+/* ====================== SLIDER ATUALIZADO ====================== */
 .slider-container {
   position: relative;
   max-width: 1100px;
@@ -447,32 +447,36 @@ canvas { display: block; }
   overflow: hidden;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  background: #0A0E1A; /* fundo escuro para sobrar espaço */
 }
 
 .slider-wrapper {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.6s ease-in-out;
   width: 100%;
 }
 
 .slider-wrapper img {
   min-width: 100%;
   height: auto;
-  display: block;
-  object-fit: cover;
+  max-height: 620px;           /* Ajuste conforme necessário */
+  object-fit: contain;         /* ← Isso faz a imagem aparecer inteira */
+  background: #0A0E1A;
+  padding: 20px 0;             /* espaço interno */
+  box-sizing: border-box;
 }
 
 .slider-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(8,11,18,0.8);
+  background: rgba(8,11,18,0.85);
   color: white;
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
   z-index: 10;
   transition: all 0.3s;
@@ -480,7 +484,7 @@ canvas { display: block; }
 
 .slider-btn:hover {
   background: var(--purple);
-  transform: translateY(-50%) scale(1.1);
+  transform: translateY(-50%) scale(1.08);
 }
 
 .prev { left: 20px; }
@@ -504,7 +508,7 @@ canvas { display: block; }
 
 .dot.active {
   background: var(--purple);
-  width: 28px;
+  width: 30px;
   border-radius: 20px;
 }
 </style>
