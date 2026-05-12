@@ -948,5 +948,95 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   });
 });
 </script>
+
+<!-- ====================== BLOQUEADOR + NOTIFICAÇÕES ====================== -->
+
+<!-- Bloqueador F12, Ctrl+C, Clique Direito -->
+<script>
+// Bloqueio avançado de teclas e clique direito
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'F12' || 
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) || 
+        (e.ctrlKey && e.key === 'u') || 
+        (e.ctrlKey && e.key === 'c')) {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Mensagem ao tentar inspecionar
+console.log("%c⚠️ Ação bloqueada! Este site é protegido.", "color: #8250FF; font-size: 14px; font-weight: bold;");
+
+// Notificações de Compras (Fake Live)
+const compras = [
+    { nome: "Lucas Mendes", plano: "Vitalício", tempo: "há 1 minuto", cidade: "SP" },
+    { nome: "Beatriz Silva", plano: "3 Meses", tempo: "há 3 minutos", cidade: "RJ" },
+    { nome: "Gabriel Costa", plano: "Vitalício", tempo: "há 5 minutos", cidade: "BH" },
+    { nome: "Ana Clara", plano: "6 Meses", tempo: "há 8 minutos", cidade: "Curitiba" },
+    { nome: "Matheus Oliveira", plano: "3 Meses", tempo: "há 12 minutos", cidade: "Fortaleza" }
+];
+
+let index = 0;
+
+function mostrarNotificacao() {
+    const notificacao = document.createElement('div');
+    notificacao.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #0F1520;
+        border: 1px solid #8250FF;
+        border-radius: 12px;
+        padding: 14px 18px;
+        width: 280px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        z-index: 10000;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        color: #fff;
+        font-size: 14px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+    `;
+
+    notificacao.innerHTML = `
+        <div style="font-size:22px;">🦈</div>
+        <div>
+            <strong>${compras[index].nome}</strong> comprou o plano<br>
+            <span style="color:#B97AFF">${compras[index].plano}</span><br>
+            <small style="color:#8B8FA8">${compras[index].tempo} • ${compras[index].cidade}</small>
+        </div>
+    `;
+
+    document.body.appendChild(notificacao);
+
+    // Animação de entrada
+    setTimeout(() => {
+        notificacao.style.opacity = '1';
+        notificacao.style.transform = 'translateY(0)';
+    }, 100);
+
+    // Remover após 5 segundos
+    setTimeout(() => {
+        notificacao.style.opacity = '0';
+        notificacao.style.transform = 'translateY(20px)';
+        setTimeout(() => notificacao.remove(), 400);
+    }, 5000);
+
+    index = (index + 1) % compras.length;
+}
+
+// Inicia as notificações a cada 8~15 segundos
+setTimeout(() => {
+    mostrarNotificacao();
+    setInterval(() => {
+        if (Math.random() > 0.3) mostrarNotificacao(); // 70% de chance
+    }, 8500);
+}, 4500);
+</script>
 </body>
 </html>
