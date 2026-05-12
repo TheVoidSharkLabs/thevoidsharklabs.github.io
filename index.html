@@ -887,78 +887,133 @@ canvas { display: block; }
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script>
-// ANIMATED CHART
+// ==================== GRÁFICO PROFISSIONAL - SEM CORTAR ====================
 const ctx = document.getElementById('growthChart').getContext('2d');
-const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-const data = [820,1100,1350,1800,2200,2900,3400,4100,5200,7000,9800,12400];
-
-const grad = ctx.createLinearGradient(0,0,0,280);
-grad.addColorStop(0,'rgba(130,80,255,0.4)');
-grad.addColorStop(1,'rgba(130,80,255,0)');
 
 const chart = new Chart(ctx, {
-  type:'line',
-  data:{
-    labels: months,
-    datasets:[{
-      label:'FPS Médio',
-      data: [45,62,78,95,112,138,165,189,215,248,285,320],
-      borderColor:'#8250FF',
-      backgroundColor: grad,
-      borderWidth:2.5,
-      pointBackgroundColor:'#8250FF',
-      pointBorderColor:'#fff',
-      pointBorderWidth:2,
-      pointRadius:4,
-      pointHoverRadius:7,
-      tension:0.4,
-      fill:true
-    },{
-      label:'Latência (ms)',
-      data: [68,55,48,42,38,35,32,29,27,25,23,21],
-      borderColor:'#3DD5FF',
-      backgroundColor:'transparent',
-      borderWidth:2,
-      pointRadius:3,
-      pointHoverRadius:6,
-      pointBackgroundColor:'#3DD5FF',
-      tension:0.4,
-      fill:false,
-      borderDash:[6,3]
+  type: 'line',
+  data: {
+    labels: Array.from({length: 50}, () => ''),
+    datasets: [{
+      label: '',
+      data: Array(50).fill(52),
+      borderColor: '#FF3B5C',
+      borderWidth: 3.8,
+      tension: 0.2,
+      pointRadius: 0,
+      fill: false
     }]
   },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    animation:{duration:1800,easing:'easeInOutQuart'},
-    interaction:{intersect:false,mode:'index'},
-    plugins:{
-      legend:{
-        labels:{color:'#8B8FA8',font:{family:"'Syne', sans-serif",size:12},boxWidth:12,padding:16}
-      },
-      tooltip:{
-        backgroundColor:'#0F1520',
-        borderColor:'rgba(130,80,255,0.4)',
-        borderWidth:1,
-        titleColor:'#F0EEFF',
-        bodyColor:'#8B8FA8',
-        padding:12,
-        cornerRadius:10
-      }
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: { top: 115, bottom: 25, left: 20, right: 20 }
     },
-    scales:{
-      x:{
-        grid:{color:'rgba(255,255,255,0.04)'},
-        ticks:{color:'#8B8FA8',font:{family:"'Syne',sans-serif",size:11}}
-      },
-      y:{
-        grid:{color:'rgba(255,255,255,0.04)'},
-        ticks:{color:'#8B8FA8',font:{family:"'Syne',sans-serif",size:11}}
+    animation: { duration: 700 },
+    plugins: { 
+      legend: { display: false }, 
+      tooltip: { enabled: false } 
+    },
+    scales: {
+      x: { display: false, grid: { display: false } },
+      y: { 
+        min: 30, 
+        max: 1050,        // Aumentado para suportar até 1000 FPS
+        display: false,
+        grid: { display: false }
       }
     }
   }
 });
 
+// ==================== TEXTO + CONTADOR ====================
+const mainChart = document.getElementById('mainChart');
+mainChart.style.position = 'relative';
+
+const fpsCounter = document.createElement('div');
+fpsCounter.style.cssText = `
+  position: absolute; top: 28px; left: 32px; font-size: 48px; 
+  font-weight: 800; font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -2.5px; z-index: 11;
+`;
+
+const statusText = document.createElement('div');
+statusText.style.cssText = `
+  position: absolute; top: 82px; left: 32px; font-size: 15.5px; 
+  font-weight: 700; letter-spacing: 1px; z-index: 10;
+  font-family: 'Space Grotesk', sans-serif;
+`;
+
+mainChart.appendChild(fpsCounter);
+mainChart.appendChild(statusText);
+
+let currentFPS = 52;
+let phase = 0;
+
+function updateFPSDisplay() {
+  fpsCounter.textContent = currentFPS;
+  fpsCounter.style.color = phase === 0 ? '#FF3B5C' : '#B97AFF';
+}
+
+// ==================== ANIMAÇÃO COM PICOS ALEATÓRIOS ====================
+function startGraphAnimation() {
+  let time = 0;
+  let base = 52;
+
+  setInterval(() => {
+    time += 0.25;
+
+    if (phase === 0) {
+      base = 52;
+    } else {
+      base = 520; // Base alta
+    }
+
+    let variation = Math.sin(time) * 18 + Math.cos(time * 2.3) * 12;
+    
+    // Picos aleatórios fortes quando COM SharkOptimizer
+    if (phase === 1 && Math.random() < 0.18) {
+      variation += Math.random() * 480 + 80; // Pico aleatório até ~1000
+    }
+
+    currentFPS = Math.floor(base + variation);
+    if (currentFPS < 35) currentFPS = 48;
+
+    // Atualiza gráfico
+    const data = chart.data.datasets[0].data;
+    data.shift();
+    data.push(currentFPS);
+    chart.update('none');
+
+    updateFPSDisplay();
+  }, 65);
+}
+
+// ==================== TRANSIÇÃO ====================
+setTimeout(() => {
+  statusText.innerHTML = `<span style="color:#FF3B5C;">FPS SEM SharkOptimizer</span>`;
+  statusText.style.opacity = '1';
+  updateFPSDisplay();
+}, 600);
+
+setTimeout(() => {
+  statusText.style.opacity = '0';
+  setTimeout(() => {
+    phase = 1;
+    chart.data.datasets[0].borderColor = '#B97AFF'; // Roxo
+    statusText.innerHTML = `<span style="color:#B97AFF;">FPS COM SharkOptimizer</span>`;
+    statusText.style.opacity = '1';
+  }, 900);
+}, 3400);
+
+// Inicia
+setTimeout(() => {
+  startGraphAnimation();
+}, 400);
+</script>
+
+<script>
 // COUNTER ANIMATION
 function animateCounter(el) {
   const target = parseFloat(el.dataset.count);
@@ -1041,7 +1096,6 @@ hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('active');
 });
 
-// Fechar menu ao clicar em um link
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', () => {
     navLinks.classList.remove('active');
@@ -1155,14 +1209,15 @@ setTimeout(() => {
 }, 1200);
 </script>
 
- <script>
+<script>
 // Slider Functionality
 let currentSlide = 0;
 const slider = document.getElementById('slider');
-const slides = slider.children.length;
+const slides = slider ? slider.children.length : 0;
 const dotsContainer = document.getElementById('dots');
 
 function createDots() {
+  if (!dotsContainer) return;
   dotsContainer.innerHTML = '';
   for (let i = 0; i < slides; i++) {
     const dot = document.createElement('div');
@@ -1173,35 +1228,28 @@ function createDots() {
   }
 }
 
-function updateDots() {
-  document.querySelectorAll('.dot').forEach((dot, i) => {
-    dot.classList.toggle('active', i === currentSlide);
-  });
-}
-
 function goToSlide(n) {
   currentSlide = n;
-  slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-  updateDots();
+  if (slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
 }
 
-document.getElementById('nextBtn').addEventListener('click', () => {
+document.getElementById('nextBtn')?.addEventListener('click', () => {
   currentSlide = (currentSlide + 1) % slides;
   goToSlide(currentSlide);
 });
 
-document.getElementById('prevBtn').addEventListener('click', () => {
+document.getElementById('prevBtn')?.addEventListener('click', () => {
   currentSlide = (currentSlide - 1 + slides) % slides;
   goToSlide(currentSlide);
 });
 
-// Auto slide
 setInterval(() => {
-  currentSlide = (currentSlide + 1) % slides;
-  goToSlide(currentSlide);
+  if (slides > 0) {
+    currentSlide = (currentSlide + 1) % slides;
+    goToSlide(currentSlide);
+  }
 }, 4500);
 
-// Inicializar
 createDots();
 </script>
 </body>
