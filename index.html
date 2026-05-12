@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SharkOptimizer — Otimizador de PC Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080B12;
+  --bg2: #0D1120;
+  --bg3: #111827;
+  --card: #0F1520;
+  --border: rgba(130,80,255,0.18);
+  --border2: rgba(130,80,255,0.35);
+  --purple: #8250FF;
+  --purple2: #6B35F0;
+  --purple-glow: rgba(130,80,255,0.25);
+  --text: #F0EEFF;
+  --muted: #8B8FA8;
+  --accent: #B97AFF;
+  --green: #3DFFA0;
+  --cyan: #3DD5FF;
+  --gold: #FFB830;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 60px;
+  background: rgba(8,11,18,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+}
+.nav-logo svg { width: 32px; height: 32px; }
+.nav-links { display: flex; gap: 36px; }
+.nav-links a {
+  color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600;
+  letter-spacing: 0.5px; transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-cta {
+  background: var(--purple); color: #fff; border: none; border-radius: 8px;
+  padding: 10px 22px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+  cursor: pointer; transition: background .2s, transform .15s;
+}
+.nav-cta:hover { background: var(--purple2); transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center;
+  padding: 120px 40px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 600px at 50% 0%, rgba(130,80,255,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 400px at 80% 80%, rgba(61,213,255,0.06) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(130,80,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(130,80,255,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(130,80,255,0.12); border: 1px solid var(--border2);
+  border-radius: 100px; padding: 6px 16px; margin-bottom: 28px;
+  font-size: 13px; font-weight: 600; color: var(--accent);
+  position: relative; z-index: 1;
+  animation: fadeDown .8s ease both;
+}
+.badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+.hero h1 {
+  font-size: clamp(48px, 7vw, 90px); font-weight: 800; line-height: 1.03;
+  letter-spacing: -2px; position: relative; z-index: 1;
+  animation: fadeUp .9s .1s ease both;
+}
+.hero h1 span { color: var(--purple); }
+.hero-sub {
+  max-width: 600px; margin: 24px auto 0; font-size: 18px; color: var(--muted);
+  line-height: 1.6; position: relative; z-index: 1;
+  animation: fadeUp .9s .2s ease both;
+}
+.hero-btns {
+  display: flex; gap: 14px; margin-top: 42px;
+  position: relative; z-index: 1;
+  animation: fadeUp .9s .3s ease both;
+}
+.btn-primary {
+  background: var(--purple); color: #fff; border: none; border-radius: 10px;
+  padding: 14px 32px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px;
+  cursor: pointer; transition: all .2s; box-shadow: 0 0 32px rgba(130,80,255,0.4);
+}
+.btn-primary:hover { background: var(--purple2); transform: translateY(-2px); box-shadow: 0 0 48px rgba(130,80,255,0.6); }
+.btn-outline {
+  background: transparent; color: var(--text); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 14px 32px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px;
+  cursor: pointer; transition: all .2s;
+}
+.btn-outline:hover { background: rgba(130,80,255,0.1); border-color: var(--purple); }
+
+/* STATS */
+.stats {
+  display: flex; justify-content: center; gap: 0;
+  padding: 60px 40px; position: relative; z-index: 1;
+  animation: fadeUp .9s .4s ease both;
+}
+.stat-item {
+  text-align: center; padding: 0 48px; border-right: 1px solid var(--border);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-size: 42px; font-weight: 800; letter-spacing: -1px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* SECTION COMMON */
+section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-family: 'Space Mono', monospace; font-size: 12px; color: var(--purple);
+  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px;
+}
+.section-title { font-size: clamp(32px, 4vw, 50px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+.section-sub { font-size: 17px; color: var(--muted); max-width: 500px; line-height: 1.6; }
+
+/* FEATURES */
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+.feat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px; transition: all .3s;
+  position: relative; overflow: hidden;
+}
+.feat-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(130,80,255,0.08) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s;
+}
+.feat-card:hover { border-color: var(--border2); transform: translateY(-4px); }
+.feat-card:hover::before { opacity: 1; }
+.feat-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(130,80,255,0.15); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+}
+.feat-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.feat-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.feat-tag {
+  display: inline-block; margin-top: 16px; font-size: 11px; font-weight: 700;
+  font-family: 'Space Mono', monospace; letter-spacing: 1px;
+  padding: 4px 10px; border-radius: 6px; border: 1px solid;
+}
+.tag-green { color: var(--green); border-color: rgba(61,255,160,0.3); background: rgba(61,255,160,0.07); }
+.tag-cyan  { color: var(--cyan);  border-color: rgba(61,213,255,0.3); background: rgba(61,213,255,0.07); }
+.tag-gold  { color: var(--gold);  border-color: rgba(255,184,48,0.3);  background: rgba(255,184,48,0.07); }
+.tag-purple{ color: var(--accent);border-color: var(--border2);        background: rgba(130,80,255,0.1); }
+
+/* CHART SECTION */
+.chart-section {
+  background: linear-gradient(180deg, transparent 0%, rgba(130,80,255,0.04) 50%, transparent 100%);
+  padding: 100px 0;
+}
+.chart-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+.chart-text { }
+.chart-text .section-label { margin-bottom: 14px; }
+.chart-text .section-title { margin-bottom: 16px; }
+.chart-text .section-sub { margin-bottom: 32px; }
+.chart-metric {
+  display: flex; align-items: center; gap: 12px; padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.chart-metric:last-child { border-bottom: none; }
+.metric-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 6px; overflow: hidden; }
+.metric-bar { height: 100%; border-radius: 6px; }
+.metric-label { font-size: 13px; font-weight: 600; min-width: 110px; color: var(--muted); }
+.metric-val { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; min-width: 48px; text-align: right; }
+
+#mainChart { width: 100%; border-radius: 16px; background: var(--card); border: 1px solid var(--border); padding: 24px; }
+
+/* PRICING */
+.pricing-wrapper { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
+.pricing-header { text-align: center; margin-bottom: 60px; }
+.pricing-grid {
+  display: flex; gap: 12px; align-items: stretch;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 16px;
+}
+.plan-card {
+  flex: 1; background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px 22px; transition: all .3s;
+  position: relative; display: flex; flex-direction: column;
+  cursor: pointer; text-align: center;
+}
+.plan-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+.plan-card.popular {
+  border-color: var(--purple); box-shadow: 0 0 40px rgba(130,80,255,0.3);
+  background: linear-gradient(160deg, rgba(130,80,255,0.12) 0%, var(--card) 50%);
+}
+.popular-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--purple); color: #fff; font-size: 10px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase; padding: 4px 14px; border-radius: 100px;
+  font-family: 'Space Mono', monospace;
+}
+.selected-card {
+  border-color: var(--purple) !important; box-shadow: 0 0 60px rgba(130,80,255,0.5) !important;
+}
+.plan-period {
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+}
+.plan-price { font-size: 14px; color: var(--muted); line-height: 1; margin-bottom: 4px; }
+.plan-price span.big { font-size: 48px; font-weight: 800; color: var(--text); letter-spacing: -2px; }
+.plan-price span.cents { font-size: 18px; font-weight: 700; vertical-align: super; margin-left: -4px; color: var(--muted); }
+.plan-price span.currency { font-size: 18px; font-weight: 700; vertical-align: super; }
+.plan-divider { height: 1px; background: var(--border); margin: 20px 0; }
+.plan-features { text-align: left; flex: 1; }
+.plan-feature {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted); margin-bottom: 10px;
+}
+.plan-feature::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.plan-cta {
+  margin-top: 22px; width: 100%; padding: 12px;
+  border-radius: 10px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+  cursor: pointer; transition: all .2s;
+  background: rgba(130,80,255,0.15); border: 1px solid var(--border2); color: var(--accent);
+}
+.plan-cta:hover { background: var(--purple); color: #fff; }
+.plan-card.popular .plan-cta {
+  background: var(--purple); color: #fff; border-color: var(--purple);
+}
+.plan-card.popular .plan-cta:hover { background: var(--purple2); }
+
+/* LIFETIME */
+.plan-card.lifetime { background: linear-gradient(160deg, rgba(255,184,48,0.08) 0%, var(--card) 60%); border-color: rgba(255,184,48,0.3); }
+.plan-card.lifetime:hover { border-color: rgba(255,184,48,0.6); }
+.lifetime-icon { font-size: 24px; margin-bottom: 8px; }
+
+/* TESTIMONIALS */
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+.testi-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px;
+  transition: all .3s;
+}
+.testi-card:hover { border-color: var(--border2); }
+.testi-stars { color: var(--gold); font-size: 14px; margin-bottom: 14px; }
+.testi-text { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 14px; flex-shrink: 0;
+}
+.testi-name { font-size: 14px; font-weight: 700; }
+.testi-role { font-size: 12px; color: var(--muted); }
+
+/* ANIMATED ORBS BG */
+.orbs { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.18;
+  animation: orbFloat linear infinite;
+}
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -60px) scale(1.1); }
+  66% { transform: translate(-30px, 30px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* COUNTERS */
+.counter-section {
+  padding: 80px 60px; max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 20px;
+}
+.counter-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 28px; text-align: center; transition: all .3s;
+}
+.counter-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.counter-num {
+  font-size: 40px; font-weight: 800; letter-spacing: -1px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.counter-desc { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 60px; display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { font-size: 20px; font-weight: 800; }
+.footer-links { display: flex; gap: 28px; }
+.footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-copy { font-size: 12px; color: var(--muted); }
+
+/* FAQ */
+.faq-list { margin-top: 48px; }
+.faq-item {
+  border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 12px; overflow: hidden; transition: all .3s;
+}
+.faq-item:hover { border-color: var(--border2); }
+.faq-q {
+  padding: 22px 28px; cursor: pointer; font-weight: 700; font-size: 15px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--card);
+}
+.faq-q::after { content: '+'; font-size: 22px; color: var(--purple); transition: transform .3s; }
+.faq-item.open .faq-q::after { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height .4s ease;
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+  background: var(--card); padding: 0 28px;
+}
+.faq-item.open .faq-a { max-height: 200px; padding: 0 28px 22px; }
+
+/* CHART CANVAS */
+canvas { display: block; }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* Mobile */
+@media (max-width: 900px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  section { padding: 60px 20px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .chart-wrapper { grid-template-columns: 1fr; padding: 0 20px; }
+  .counter-section { grid-template-columns: 1fr 1fr; padding: 40px 20px; }
+  .pricing-grid { flex-direction: column; }
+  .stats { flex-direction: column; gap: 30px; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
+  footer { flex-direction: column; gap: 20px; text-align: center; }
+  .pricing-wrapper { padding: 60px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ORBS -->
+<div class="orbs">
+  <div class="orb" style="width:600px;height:600px;background:#8250FF;left:-200px;top:-100px;animation-duration:18s"></div>
+  <div class="orb" style="width:500px;height:500px;background:#3DD5FF;right:-150px;top:30%;animation-duration:22s;animation-delay:-6s"></div>
+  <div class="orb" style="width:400px;height:400px;background:#B97AFF;left:30%;bottom:10%;animation-duration:26s;animation-delay:-12s"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 20C4 20 8 8 16 8C24 8 28 20 28 20" stroke="#8250FF" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M2 24L8 18L14 22L20 14L26 18L30 12" stroke="#B97AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="16" cy="8" r="3" fill="#8250FF"/>
+    </svg>
+    SharkOptimizer
+  </div>
+  <div class="nav-links">
+    <a href="#features">Recursos</a>
+    <a href="#analytics">Resultados</a>
+    <a href="#pricing">Preços</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Otimizar Agora</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge"><span class="badge-dot"></span> Otimizador de PC mais avançado do Brasil</div>
+  <h1>O <span>Máximo</span> de FPS e<br>Desempenho do seu PC</h1>
+  <p class="hero-sub">Otimizações profissionais para Windows: +FPS, redução de latência, menos stuttering e sistema mais responsivo em um clique.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Ver Planos</button>
+    <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Conhecer Recursos</button>
+  </div>
+
+  <!-- STATS INLINE -->
+  <div class="stats">
+    <div class="stat-item"><div class="stat-num" data-count="12400">0</div><div class="stat-label">Usuários Ativos</div></div>
+    <div class="stat-item"><div class="stat-num" data-count="99.9">0</div><div class="stat-label">% Uptime / Estabilidade</div></div>
+    <div class="stat-item"><div class="stat-num" data-count="87">0</div><div class="stat-label">Média de Ganho de FPS</div></div>
+    <div class="stat-item"><div class="stat-num" data-count="450000">0</div><div class="stat-label">Otimizaçõess Aplicadas</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="reveal">
+    <div class="section-label">// Recursos</div>
+    <h2 class="section-title">Tudo que seu PC precisa<br>para voar</h2>
+    <p class="section-sub">Ferramentas profissionais desenvolvidas para máximo desempenho em jogos e aplicações.</p>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feat-card">
+      <div class="feat-icon">🎮</div>
+      <h3>GPU & FPS Booster</h3>
+      <p>HAGS, NVIDIA Reflex, Frame Generation, Shader Cache, Modo Máximo de Energia da GPU e ajustes de driver para máximo framerate.</p>
+      <span class="feat-tag tag-green">+FPS e Menos Stutter</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌐</div>
+      <h3>Otimização de Rede</h3>
+      <p>Redução de latência com TCP BBR, desativação Nagle, DNS otimizado, QoS e ajustes de buffer para jogos online.</p>
+      <span class="feat-tag tag-cyan">Menor Ping</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🧠</div>
+      <h3>Gerenciamento de Memória</h3>
+      <p>Large Pages, compressão inteligente, arquivo de paginação otimizado e prioridade para jogos.</p>
+      <span class="feat-tag tag-purple">Mais RAM Efetiva</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚙️</div>
+      <h3>Sistema & CPU</h3>
+      <p>Plano Ultimate Performance, agendador de CPU, HPET, Game Mode e desativação de telemetria do Windows.</p>
+      <span class="feat-tag tag-gold">Desempenho Máximo</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔧</div>
+      <h3>Serviços do Windows</h3>
+      <p>Desativação inteligente de serviços em segundo plano, liberando CPU e RAM para seus jogos.</p>
+      <span class="feat-tag tag-green">Menos Background</span>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <h3>Privacidade & Limpeza</h3>
+      <p>Bloqueio total de telemetria, anúncios e rastreamento, mantendo seu sistema limpo e seguro.</p>
+      <span class="feat-tag tag-cyan">Sistema Leve</span>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYTICS SECTION WITH ANIMATED CHART -->
+<div class="chart-section" id="analytics">
+  <div class="chart-wrapper">
+    <div class="chart-text reveal">
+      <div class="section-label">// Resultados Reais</div>
+      <h2 class="section-title">Desempenho que<br>você sente</h2>
+      <p class="section-sub">Melhorias comprovadas em FPS, latência e estabilidade do sistema.</p>
+      <div style="margin-top: 32px;">
+        <div class="chart-metric">
+          <span class="metric-label">Ganho Médio FPS</span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:87%;background:linear-gradient(90deg,#8250FF,#B97AFF)"></div></div>
+          <span class="metric-val" style="color:#B97AFF">+87%</span>
+        </div>
+        <div class="chart-metric">
+          <span class="metric-label">Redução de Latência</span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:68%;background:linear-gradient(90deg,#3DD5FF,#6BE8FF)"></div></div>
+          <span class="metric-val" style="color:#3DD5FF">-68ms</span>
+        </div>
+        <div class="chart-metric">
+          <span class="metric-label">Uso de CPU em Idle</span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:42%;background:linear-gradient(90deg,#3DFFA0,#7EFFCC)"></div></div>
+          <span class="metric-val" style="color:#3DFFA0">-42%</span>
+        </div>
+        <div class="chart-metric">
+          <span class="metric-label">Estabilidade em Jogo</span>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:94%;background:linear-gradient(90deg,#FFB830,#FFD584)"></div></div>
+          <span class="metric-val" style="color:#FFB830">94%</span>
+        </div>
+      </div>
+    </div>
+    <div id="mainChart" class="reveal">
+      <canvas id="growthChart" height="280"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- COUNTER CARDS -->
+<div class="counter-section reveal">
+  <div class="counter-card">
+    <div class="counter-num" data-count="99.9">0</div>
+    <div class="counter-desc">% Estabilidade do Sistema</div>
+  </div>
+  <div class="counter-card">
+    <div class="counter-num" data-count="12400">0</div>
+    <div class="counter-desc">Usuários otimizados</div>
+  </div>
+  <div class="counter-card">
+    <div class="counter-num" data-count="28">0</div>
+    <div class="counter-desc">ms Latência média reduzida</div>
+  </div>
+  <div class="counter-card">
+    <div class="counter-num" data-count="65">0</div>
+    <div class="counter-desc">Otimizaçõess disponíveis</div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing-wrapper" id="pricing">
+  <div class="pricing-header reveal">
+    <div class="section-label" style="text-align:center">// Planos</div>
+    <h2 class="section-title">Escolha seu plano</h2>
+    <p class="section-sub" style="margin:0 auto">Acesso completo a todas as otimizações. Sem pegadinhas.</p>
+  </div>
+  <div class="pricing-grid reveal">
+
+    <!-- 1 MÊS -->
+        <!-- 1 MÊS -->
+    <div class="plan-card" onclick="selectPlan(this)">
+      <div class="plan-period">1 Mês</div>
+      <div class="plan-price">
+        <span class="currency">R$</span><span class="big">35</span><span class="cents">,99</span>
+      </div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feature">Todas as otimizações</div>
+        <div class="plan-feature">Suporte via ticket</div>
+        <div class="plan-feature">Atualizações mensais</div>
+        <div class="plan-feature">1 PC</div>
+      </div>
+      <button class="plan-cta" onclick="window.open('https://shark.discloud.app/', '_blank')">Assinar Plano</button>
+    </div>
+
+    <!-- 2 MESES -->
+    <div class="plan-card" onclick="selectPlan(this)">
+      <div class="plan-period">2 Meses</div>
+      <div class="plan-price">
+        <span class="currency">R$</span><span class="big">65</span><span class="cents">,99</span>
+      </div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feature">Todas as otimizações</div>
+        <div class="plan-feature">Suporte prioritário</div>
+        <div class="plan-feature">Relatórios de desempenho</div>
+        <div class="plan-feature">2 PCs</div>
+      </div>
+      <button class="plan-cta" onclick="window.open('https://shark.discloud.app/', '_blank')">Assinar Plano</button>
+    </div>
+
+    <!-- 3 MESES (POPULAR) -->
+    <div class="plan-card popular" onclick="selectPlan(this)">
+      <div class="popular-badge">POPULAR</div>
+      <div class="plan-period">3 Meses</div>
+      <div class="plan-price">
+        <span class="currency">R$</span><span class="big">135</span><span class="cents">,99</span>
+      </div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feature">Todas as otimizações premium</div>
+        <div class="plan-feature">Suporte prioritário 24/7</div>
+        <div class="plan-feature">Ajustes personalizados</div>
+        <div class="plan-feature">3 PCs</div>
+        <div class="plan-feature">Perfis por jogo</div>
+      </div>
+      <button class="plan-cta" onclick="window.open('https://shark.discloud.app/', '_blank')">Assinar Plano</button>
+    </div>
+
+    <!-- 6 MESES -->
+    <div class="plan-card" onclick="selectPlan(this)">
+      <div class="plan-period">6 Meses</div>
+      <div class="plan-price">
+        <span class="currency">R$</span><span class="big">255</span><span class="cents">,99</span>
+      </div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feature">Todas as otimizações premium</div>
+        <div class="plan-feature">Suporte VIP dedicado</div>
+        <div class="plan-feature">Dashboard avançado</div>
+        <div class="plan-feature">5 PCs</div>
+        <div class="plan-feature">Acesso antecipado</div>
+      </div>
+      <button class="plan-cta" onclick="window.open('https://shark.discloud.app/', '_blank')">Assinar Plano</button>
+    </div>
+
+    <!-- VITALÍCIO -->
+    <div class="plan-card lifetime" onclick="selectPlan(this)">
+      <div class="lifetime-icon">∞</div>
+      <div class="plan-period">Vitalício</div>
+      <div class="plan-price">
+        <span class="currency">R$</span><span class="big">550</span><span class="cents">,99</span>
+      </div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="plan-feature">Acesso eterno</div>
+        <div class="plan-feature">Todas as atualizações futuras</div>
+        <div class="plan-feature">Suporte VIP permanente</div>
+        <div class="plan-feature">PCs ilimitados</div>
+        <div class="plan-feature">Cargo exclusivo no Discord</div>
+        <div class="plan-feature">Configuração personalizada</div>
+      </div>
+      <button class="plan-cta" style="background:rgba(255,184,48,0.15);border-color:rgba(255,184,48,0.4);color:#FFB830" 
+              onclick="window.open('https://shark.discloud.app/', '_blank')">Comprar Vitalício</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="testi">
+  <div class="reveal">
+    <div class="section-label">// Depoimentos</div>
+    <h2 class="section-title">O que dizem nossos usuários</h2>
+  </div>
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Ganhei mais de 40 FPS em Valorant e CS2. A latência caiu bastante e o jogo ficou muito mais estável. Melhor otimizador que já usei."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(130,80,255,0.2);color:#B97AFF">KR</div>
+        <div><div class="testi-name">KingRodrigo</div><div class="testi-role">Ryzen 5 + RTX 3060</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"O plano vitalício valeu cada centavo. Meu PC low-end agora roda jogos modernos com FPS aceitável e sem travamentos."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(61,213,255,0.15);color:#3DD5FF">ZX</div>
+        <div><div class="testi-name">ZentrixDev</div><div class="testi-role">PC Gamer Low-End</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Reduzi o ping em 25ms e o 1% lows melhorou muito. O suporte respondeu rápido e o painel é super intuitivo."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(61,255,160,0.12);color:#3DFFA0">NH</div>
+        <div><div class="testi-name">NightHunter</div><div class="testi-role">Competitivo FPS</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="reveal" style="max-width:760px;margin:0 auto">
+    <div class="section-label">// FAQ</div>
+    <h2 class="section-title">Perguntas frequentes</h2>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Como funciona a ativação?</div>
+        <div class="faq-a">Após a compra, você recebe acesso imediato ao painel. Basta baixar o programa e aplicar as otimizações desejadas. O processo é simples e guiado.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">O plano vitalício inclui atualizações?</div>
+        <div class="faq-a">Sim! Acesso eterno a todas as otimizações atuais e futuras sem custo adicional. Atualizações contínuas são garantidas.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">É seguro usar o SharkOptimizer?</div>
+        <div class="faq-a">Todas as otimizações são reversíveis (exceto quando indicado). Recomendamos criar um ponto de restauração antes de aplicar. O uso é de total responsabilidade do usuário.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Quais formas de pagamento?</div>
+        <div class="faq-a">PIX. Pagamento 100% seguro.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Funciona em qual Windows?</div>
+        <div class="faq-a">Windows 10 e Windows 11 (todas as versões). Melhor desempenho em instalações limpas.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section style="text-align:center;padding:80px 40px">
+  <div class="reveal">
+    <div style="display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:60px 80px;max-width:700px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 500px 300px at 50% 0%,rgba(130,80,255,0.12),transparent)"></div>
+      <div class="section-label" style="text-align:center">// Pronto para voar?</div>
+      <h2 style="font-size:36px;font-weight:800;letter-spacing:-1px;margin:12px 0 16px;position:relative;z-index:1">Leve seu PC<br>para o próximo nível</h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:32px;position:relative;z-index:1">Junte-se a milhares de jogadores que já maximizaram o desempenho do PC.</p>
+      <button class="btn-primary" style="font-size:16px;padding:16px 40px;position:relative;z-index:1" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Ver Todos os Planos →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🦈 SharkOptimizer</div>
+  <div class="footer-links">
+    <a href="#">Termos de Uso</a>
+    <a href="#">Privacidade</a>
+    <a href="#">Suporte</a>
+    <a href="#">Discord</a>
+  </div>
+  <div class="footer-copy">© 2026 SharkOptimizer. Todos os direitos reservados.</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+// ANIMATED CHART
+const ctx = document.getElementById('growthChart').getContext('2d');
+const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const data = [820,1100,1350,1800,2200,2900,3400,4100,5200,7000,9800,12400];
+
+const grad = ctx.createLinearGradient(0,0,0,280);
+grad.addColorStop(0,'rgba(130,80,255,0.4)');
+grad.addColorStop(1,'rgba(130,80,255,0)');
+
+const chart = new Chart(ctx, {
+  type:'line',
+  data:{
+    labels: months,
+    datasets:[{
+      label:'FPS Médio',
+      data: [45,62,78,95,112,138,165,189,215,248,285,320],
+      borderColor:'#8250FF',
+      backgroundColor: grad,
+      borderWidth:2.5,
+      pointBackgroundColor:'#8250FF',
+      pointBorderColor:'#fff',
+      pointBorderWidth:2,
+      pointRadius:4,
+      pointHoverRadius:7,
+      tension:0.4,
+      fill:true
+    },{
+      label:'Latência (ms)',
+      data: [68,55,48,42,38,35,32,29,27,25,23,21],
+      borderColor:'#3DD5FF',
+      backgroundColor:'transparent',
+      borderWidth:2,
+      pointRadius:3,
+      pointHoverRadius:6,
+      pointBackgroundColor:'#3DD5FF',
+      tension:0.4,
+      fill:false,
+      borderDash:[6,3]
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    animation:{duration:1800,easing:'easeInOutQuart'},
+    interaction:{intersect:false,mode:'index'},
+    plugins:{
+      legend:{
+        labels:{color:'#8B8FA8',font:{family:"'Syne', sans-serif",size:12},boxWidth:12,padding:16}
+      },
+      tooltip:{
+        backgroundColor:'#0F1520',
+        borderColor:'rgba(130,80,255,0.4)',
+        borderWidth:1,
+        titleColor:'#F0EEFF',
+        bodyColor:'#8B8FA8',
+        padding:12,
+        cornerRadius:10
+      }
+    },
+    scales:{
+      x:{
+        grid:{color:'rgba(255,255,255,0.04)'},
+        ticks:{color:'#8B8FA8',font:{family:"'Syne',sans-serif",size:11}}
+      },
+      y:{
+        grid:{color:'rgba(255,255,255,0.04)'},
+        ticks:{color:'#8B8FA8',font:{family:"'Syne',sans-serif",size:11}}
+      }
+    }
+  }
+});
+
+// COUNTER ANIMATION
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.count);
+  const isDecimal = target % 1 !== 0;
+  const duration = 2200;
+  const start = performance.now();
+  const suffix = el.dataset.suffix || '';
+  function update(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 4);
+    const val = target * ease;
+    if (isDecimal) {
+      el.textContent = val.toFixed(1) + suffix;
+    } else {
+      const v = Math.round(val);
+      el.textContent = v >= 1000000 ? (v/1000000).toFixed(1)+'M' : v >= 1000 ? (v/1000).toFixed(v>9999?0:1)+'k' : v + suffix;
+    }
+    if (t < 1) requestAnimationFrame(update);
+    else {
+      if (isDecimal) el.textContent = target + suffix;
+      else el.textContent = target >= 1000000 ? (target/1000000).toFixed(1)+'M' : target >= 1000 ? Math.round(target/1000)+'k+' : target;
+    }
+  }
+  requestAnimationFrame(update);
+}
+
+// INTERSECTION OBSERVER
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('[data-count]').forEach(el => animateCounter(el));
+    }
+  });
+}, {threshold: 0.15});
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('[data-count]').forEach(el => {
+  const parentReveal = el.closest('.reveal');
+  if (!parentReveal) observer.observe(el);
+});
+
+// Hero counters (auto-animate)
+setTimeout(() => {
+  document.querySelectorAll('.hero [data-count]').forEach(animateCounter);
+}, 600);
+
+// ANIMATE METRIC BARS
+setTimeout(() => {
+  document.querySelectorAll('.metric-bar').forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = '0';
+    setTimeout(() => {
+      bar.style.transition = 'width 1.6s cubic-bezier(.22,1,.36,1)';
+      bar.style.width = w;
+    }, 100);
+  });
+}, 300);
+
+// PLAN SELECTION
+function selectPlan(card) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected-card'));
+  card.classList.add('selected-card');
+}
+
+// FAQ TOGGLE
+function toggleFaq(item) {
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
