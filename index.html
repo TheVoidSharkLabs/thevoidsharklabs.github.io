@@ -972,7 +972,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// ==================== MUITOS NOMES (18 variações) ====================
+// ==================== LISTA DE COMPRADORES ====================
 const compras = [
     { nome: "<strong>Lucas M***</strong>", plano: "Vitalício", tempo: "há 28 segundos", cidade: "São Paulo" },
     { nome: "Beatriz S***", plano: "<strong>3 Meses</strong>", tempo: "há 1 minuto", cidade: "Rio de Janeiro" },
@@ -1040,6 +1040,9 @@ function mostrarNotificacao() {
         notificacao.style.transform = 'translateY(30px)';
         setTimeout(() => notificacao.remove(), 500);
     }, 5200);
+
+    // ✅ Incrementa o índice (agora vai trocar de nome)
+    index = (index + 1) % compras.length;
 }
 
 // Inicia as notificações
@@ -1047,7 +1050,7 @@ setTimeout(() => {
     mostrarNotificacao();
     
     setInterval(() => {
-        if (Math.random() > 0.18) mostrarNotificacao(); // alta frequência
+        if (Math.random() > 0.2) mostrarNotificacao();
     }, 4500);
 }, 1200);
 </script>
