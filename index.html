@@ -886,78 +886,91 @@ canvas { display: block; }
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-<script>
-// ANIMATED CHART
-const ctx = document.getElementById('growthChart').getContext('2d');
-const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-const data = [820,1100,1350,1800,2200,2900,3400,4100,5200,7000,9800,12400];
 
-const grad = ctx.createLinearGradient(0,0,0,280);
-grad.addColorStop(0,'rgba(130,80,255,0.4)');
-grad.addColorStop(1,'rgba(130,80,255,0)');
+<script>
+// ==================== NOVO GRÁFICO DE FPS ====================
+const ctx = document.getElementById('growthChart').getContext('2d');
+
+const fpsData = [42, 48, 45, 55, 52, 68, 65, 72, 70, 85, 82, 95, 92, 108, 105, 125];
 
 const chart = new Chart(ctx, {
-  type:'line',
-  data:{
-    labels: months,
-    datasets:[{
-      label:'FPS Médio',
-      data: [45,62,78,95,112,138,165,189,215,248,285,320],
-      borderColor:'#8250FF',
-      backgroundColor: grad,
-      borderWidth:2.5,
-      pointBackgroundColor:'#8250FF',
-      pointBorderColor:'#fff',
-      pointBorderWidth:2,
-      pointRadius:4,
-      pointHoverRadius:7,
-      tension:0.4,
-      fill:true
-    },{
-      label:'Latência (ms)',
-      data: [68,55,48,42,38,35,32,29,27,25,23,21],
-      borderColor:'#3DD5FF',
-      backgroundColor:'transparent',
-      borderWidth:2,
-      pointRadius:3,
-      pointHoverRadius:6,
-      pointBackgroundColor:'#3DD5FF',
-      tension:0.4,
-      fill:false,
-      borderDash:[6,3]
+  type: 'line',
+  data: {
+    labels: Array.from({length: fpsData.length}, (_, i) => `Seg ${i+1}`),
+    datasets: [{
+      label: 'FPS em Jogo',
+      data: fpsData,
+      borderColor: '#8250FF',
+      backgroundColor: 'rgba(130, 80, 255, 0.15)',
+      borderWidth: 3.5,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 6,
+      pointBackgroundColor: '#B97AFF',
+      fill: true
     }]
   },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    animation:{duration:1800,easing:'easeInOutQuart'},
-    interaction:{intersect:false,mode:'index'},
-    plugins:{
-      legend:{
-        labels:{color:'#8B8FA8',font:{family:"'Syne', sans-serif",size:12},boxWidth:12,padding:16}
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 2500,
+      easing: 'easeInOutQuart'
+    },
+    plugins: {
+      legend: {
+        display: true,
+        labels: { color: '#B97AFF', font: { size: 14, family: 'Space Grotesk' } }
       },
-      tooltip:{
-        backgroundColor:'#0F1520',
-        borderColor:'rgba(130,80,255,0.4)',
-        borderWidth:1,
-        titleColor:'#F0EEFF',
-        bodyColor:'#8B8FA8',
-        padding:12,
-        cornerRadius:10
+      tooltip: {
+        backgroundColor: '#0F1520',
+        titleColor: '#fff',
+        bodyColor: '#B97AFF',
+        displayColors: false
       }
     },
-    scales:{
-      x:{
-        grid:{color:'rgba(255,255,255,0.04)'},
-        ticks:{color:'#8B8FA8',font:{family:"'Syne',sans-serif",size:11}}
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        ticks: { color: '#8B8FA8', font: { size: 11 } }
       },
-      y:{
-        grid:{color:'rgba(255,255,255,0.04)'},
-        ticks:{color:'#8B8FA8',font:{family:"'Syne',sans-serif",size:11}}
+      y: {
+        min: 30,
+        max: 140,
+        grid: { color: 'rgba(255,255,255,0.06)' },
+        ticks: { 
+          color: '#8B8FA8', 
+          font: { size: 12 },
+          callback: function(value) { return value + ' FPS' }
+        }
       }
+    },
+    elements: {
+      line: { borderJoinStyle: 'round' }
     }
   }
 });
+
+// ==================== ANIMAÇÃO DE OSCILAÇÃO (Subindo e Descendo) ====================
+function animateFPS() {
+  let baseFPS = 95;
+  let variation = 0;
+
+  setInterval(() => {
+    variation = Math.sin(Date.now() / 800) * 12; // Oscilação suave
+    const newValue = Math.floor(baseFPS + variation);
+
+    // Atualiza o último ponto do gráfico
+    chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] = newValue;
+    chart.update('none'); // Atualiza sem animação pesada
+  }, 180);
+}
+
+// Inicia a animação após o gráfico carregar
+setTimeout(() => {
+  animateFPS();
+}, 2000);
+</script>
 
 // COUNTER ANIMATION
 function animateCounter(el) {
