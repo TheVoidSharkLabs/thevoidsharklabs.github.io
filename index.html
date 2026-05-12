@@ -438,7 +438,75 @@ canvas { display: block; }
   .hero h1 { font-size: 42px; }
   .btn-primary, .btn-outline { width: 100%; max-width: 280px; }
 }
-  
+
+/* SLIDER */
+.slider-container {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.slider-wrapper img {
+  min-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(8,11,18,0.8);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s;
+}
+
+.slider-btn:hover {
+  background: var(--purple);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(130,80,255,0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.dot.active {
+  background: var(--purple);
+  width: 28px;
+  border-radius: 20px;
+}
 </style>
 </head>
 <body>
@@ -535,6 +603,34 @@ canvas { display: block; }
       <p>Bloqueio total de telemetria, anúncios e rastreamento, mantendo seu sistema limpo e seguro.</p>
       <span class="feat-tag tag-cyan">Sistema Leve</span>
     </div>
+  </div>
+</section>
+
+ <!-- ====================== SLIDER DO PRODUTO ====================== -->
+<section id="screenshots" style="padding: 100px 5%; background: var(--bg2);">
+  <div style="text-align:center; margin-bottom: 60px;">
+    <div class="section-label">// EM AÇÃO</div>
+    <h2 class="section-title">Conheça o SharkOptimizer</h2>
+    <p class="section-sub">Interface moderna, simples e poderosa</p>
+  </div>
+
+  <div class="slider-container">
+    <div class="slider-wrapper" id="slider">
+      <img src="imgs/1.png" alt="SharkOptimizer 1">
+      <img src="imgs/2.png" alt="SharkOptimizer 2">
+      <img src="imgs/3.png" alt="SharkOptimizer 3">
+      <img src="imgs/4.png" alt="SharkOptimizer 4">
+      <img src="imgs/5.png" alt="SharkOptimizer 5">
+      <img src="imgs/6.png" alt="SharkOptimizer 6">
+      <img src="imgs/7.png" alt="SharkOptimizer 7">
+    </div>
+
+    <!-- Setas de navegação -->
+    <button class="slider-btn prev" id="prevBtn">❮</button>
+    <button class="slider-btn next" id="nextBtn">❯</button>
+
+    <!-- Dots -->
+    <div class="slider-dots" id="dots"></div>
   </div>
 </section>
 
@@ -1053,6 +1149,56 @@ setTimeout(() => {
         if (Math.random() > 0.2) mostrarNotificacao();
     }, 4500);
 }, 1200);
+</script>
+
+ <script>
+// Slider Functionality
+let currentSlide = 0;
+const slider = document.getElementById('slider');
+const slides = slider.children.length;
+const dotsContainer = document.getElementById('dots');
+
+function createDots() {
+  dotsContainer.innerHTML = '';
+  for (let i = 0; i < slides; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsContainer.appendChild(dot);
+  }
+}
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentSlide);
+  });
+}
+
+function goToSlide(n) {
+  currentSlide = n;
+  slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+  updateDots();
+}
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  currentSlide = (currentSlide + 1) % slides;
+  goToSlide(currentSlide);
+});
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  currentSlide = (currentSlide - 1 + slides) % slides;
+  goToSlide(currentSlide);
+});
+
+// Auto slide
+setInterval(() => {
+  currentSlide = (currentSlide + 1) % slides;
+  goToSlide(currentSlide);
+}, 4500);
+
+// Inicializar
+createDots();
 </script>
 </body>
 </html>
