@@ -1265,10 +1265,7 @@ const chart = new Chart(ctx, {
       borderWidth: 2.5,
       tension: 0.4,
       pointRadius: 0,
-      fill: {
-        target: 'origin',
-        above: 'rgba(255,77,109,0.05)'
-      }
+      fill: { target: 'origin', above: 'rgba(255,77,109,0.05)' }
     }]
   },
   options: {
@@ -1282,51 +1279,93 @@ const chart = new Chart(ctx, {
   }
 });
 
-let phase = 0; // 0 = sem, 1 = com
+let phase = 0;
 let time = 0;
+let tickInterval = null;
+let phaseTimer1 = null;
+let phaseTimer2 = null;
+let chartStarted = false;
+
 const fpsNumEl = document.getElementById('fpsNum');
 const fpsLabelEl = document.getElementById('fpsLabel');
+fpsNumEl.style.transition = 'opacity .5s, color .5s';
+fpsLabelEl.style.transition = 'opacity .5s, color .5s';
 
 function tick() {
   time += 0.3;
   const base = phase === 0 ? 52 : 500;
   let v = Math.sin(time) * 14 + Math.cos(time * 2.2) * 9;
   if (phase === 1 && Math.random() < 0.15) v += Math.random() * 420 + 80;
-  let fps = Math.max(35, Math.round(base + v));
-
+  const fps = Math.max(35, Math.round(base + v));
   chart.data.datasets[0].data.shift();
   chart.data.datasets[0].data.push(fps);
   chart.update('none');
-
   fpsNumEl.textContent = fps;
 }
 
-setInterval(tick, 60);
+function resetChart() {
+  // Clear all running timers and interval
+  clearInterval(tickInterval);
+  clearTimeout(phaseTimer1);
+  clearTimeout(phaseTimer2);
+  tickInterval = null;
 
-// Phase transition
-setTimeout(() => {
-  fpsLabelEl.textContent = 'SEM SharkOptimizer';
-  fpsLabelEl.style.color = '#FF4D6D';
+  // Reset state
+  phase = 0;
+  time = 0;
+  chart.data.datasets[0].data = Array(60).fill(52);
+  chart.data.datasets[0].borderColor = '#FF4D6D';
+  chart.data.datasets[0].fill = { target: 'origin', above: 'rgba(255,77,109,0.05)' };
+  chart.update('none');
+
+  fpsNumEl.style.opacity = '1';
   fpsNumEl.style.color = '#FF4D6D';
-}, 300);
+  fpsNumEl.textContent = '52';
+  fpsLabelEl.style.opacity = '1';
+  fpsLabelEl.style.color = '#FF4D6D';
+  fpsLabelEl.textContent = 'SEM SharkOptimizer';
+}
 
-setTimeout(() => {
-  fpsLabelEl.style.opacity = '0';
-  fpsNumEl.style.opacity = '0';
-  setTimeout(() => {
-    phase = 1;
-    chart.data.datasets[0].borderColor = '#A88BFF';
-    chart.data.datasets[0].fill = { target: 'origin', above: 'rgba(168,139,255,0.06)' };
-    fpsLabelEl.textContent = 'COM SharkOptimizer';
-    fpsLabelEl.style.color = '#A88BFF';
-    fpsNumEl.style.color = '#A88BFF';
-    fpsLabelEl.style.opacity = '1';
-    fpsNumEl.style.opacity = '1';
-  }, 600);
-}, 3500);
+function startChart() {
+  resetChart();
+  tickInterval = setInterval(tick, 60);
 
-fpsNumEl.style.transition = 'opacity .5s, color .5s';
-fpsLabelEl.style.transition = 'opacity .5s, color .5s';
+  phaseTimer1 = setTimeout(() => {
+    fpsLabelEl.style.opacity = '0';
+    fpsNumEl.style.opacity = '0';
+    phaseTimer2 = setTimeout(() => {
+      phase = 1;
+      chart.data.datasets[0].borderColor = '#A88BFF';
+      chart.data.datasets[0].fill = { target: 'origin', above: 'rgba(168,139,255,0.06)' };
+      fpsLabelEl.textContent = 'COM SharkOptimizer';
+      fpsLabelEl.style.color = '#A88BFF';
+      fpsNumEl.style.color = '#A88BFF';
+      fpsLabelEl.style.opacity = '1';
+      fpsNumEl.style.opacity = '1';
+    }, 600);
+  }, 3500);
+}
+
+function stopChart() {
+  clearInterval(tickInterval);
+  clearTimeout(phaseTimer1);
+  clearTimeout(phaseTimer2);
+  tickInterval = null;
+}
+
+// Watch visibility of the chart box
+const chartBox = document.querySelector('.chart-box');
+const chartObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      startChart();
+    } else {
+      stopChart();
+    }
+  });
+}, { threshold: 0.3 });
+
+chartObs.observe(chartBox);
 
 // ─── NOTIFICATIONS ───
 const buyers = [
