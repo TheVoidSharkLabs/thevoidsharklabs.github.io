@@ -50,7 +50,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* NOISE */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -59,7 +58,6 @@ body::before {
   opacity: 0.4;
 }
 
-/* ORBS */
 .orb-canvas {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
 }
@@ -73,7 +71,6 @@ body::before {
   to   { transform: translate(var(--dx, 60px), var(--dy, -40px)) scale(var(--ds, 1.1)); }
 }
 
-/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -118,7 +115,6 @@ nav.scrolled { padding: 14px 64px; }
 
 .hamburger { display: none; font-size: 24px; cursor: pointer; color: var(--text); background: none; border: none; }
 
-/* HERO */
 .hero {
   min-height: 100vh;
   display: flex; flex-direction: column;
@@ -216,7 +212,6 @@ nav.scrolled { padding: 14px 64px; }
   background: var(--purple-soft);
 }
 
-/* STATS BAR */
 .stats-bar {
   display: flex; justify-content: center; flex-wrap: wrap;
   gap: 0;
@@ -241,13 +236,10 @@ nav.scrolled { padding: 14px 64px; }
 .stat:hover { background: var(--purple-soft); }
 .stat-num {
   font-size: 32px; font-weight: 800; letter-spacing: -1px;
-  color: var(--text);
-  display: block;
+  color: var(--text); display: block;
 }
-.stat-num span { color: var(--accent); }
 .stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; font-weight: 500; }
 
-/* SECTION UTILS */
 .section-wrap {
   max-width: 1200px; margin: 0 auto; padding: 100px 64px;
   position: relative; z-index: 1;
@@ -261,15 +253,14 @@ nav.scrolled { padding: 14px 64px; }
 .section-title {
   font-size: clamp(28px, 3.5vw, 44px);
   font-weight: 800; letter-spacing: -1.5px;
-  line-height: 1.1;
-  margin-bottom: 14px;
+  line-height: 1.1; margin-bottom: 14px;
 }
 .section-sub {
   font-size: 16px; color: var(--text2);
   max-width: 480px; line-height: 1.65;
 }
 
-/* ─── PRODUCTS SHOWCASE ─── */
+/* PRODUCTS */
 .products-section {
   position: relative; z-index: 1;
   border-top: 1px solid var(--border);
@@ -297,7 +288,6 @@ nav.scrolled { padding: 14px 64px; }
   position: relative;
 }
 .product-card:hover { border-color: var(--border-hover); }
-
 .product-card.reverse { direction: rtl; }
 .product-card.reverse > * { direction: ltr; }
 
@@ -306,6 +296,7 @@ nav.scrolled { padding: 14px 64px; }
   display: flex; align-items: center; justify-content: center;
   min-height: 400px;
   overflow: hidden;
+  background: var(--bg3);
 }
 .product-visual img {
   width: 100%; height: 100%; object-fit: cover;
@@ -379,6 +370,33 @@ nav.scrolled { padding: 14px 64px; }
   display: flex; gap: 10px; flex-wrap: wrap;
 }
 
+/* VIDEO */
+.video-section {
+  background: var(--bg2);
+  position: relative; z-index: 1;
+  padding: 100px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.video-section .inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 64px;
+  text-align: center;
+}
+.video-frame {
+  margin-top: 48px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
+  position: relative;
+}
+.video-frame video { display: block; width: 100%; }
+.video-caption {
+  margin-top: 16px;
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  letter-spacing: 1px;
+}
+
 /* FEATURES */
 .features-grid {
   display: grid;
@@ -425,19 +443,13 @@ nav.scrolled { padding: 14px 64px; }
 .pill-r { color: var(--red); background: rgba(255,77,109,0.08); border: 1px solid rgba(255,77,109,0.2); }
 
 /* ANALYTICS */
-.analytics-section {
-  position: relative; z-index: 1;
-}
+.analytics-section { position: relative; z-index: 1; }
 .analytics-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 56px; align-items: center;
   max-width: 1200px; margin: 0 auto; padding: 100px 64px;
 }
-
-.metric-row {
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
-}
+.metric-row { padding: 16px 0; border-bottom: 1px solid var(--border); }
 .metric-row:last-child { border-bottom: none; }
 .metric-header {
   display: flex; justify-content: space-between;
@@ -498,7 +510,6 @@ canvas { display: block; }
   font-size: 36px; font-weight: 800; letter-spacing: -1.5px;
   color: var(--text);
 }
-.counter-num .accent { color: var(--accent); }
 .counter-desc { font-size: 12px; color: var(--text3); margin-top: 6px; font-weight: 500; }
 
 /* PRICING */
@@ -554,20 +565,16 @@ canvas { display: block; }
   color: var(--text3); letter-spacing: 2px; text-transform: uppercase;
   margin-bottom: 14px; text-align: center;
 }
-
 .plan-price-wrap { text-align: center; margin-bottom: 4px; }
 .plan-currency { font-size: 14px; font-weight: 700; vertical-align: super; margin-right: 1px; color: var(--text2); }
 .plan-amount { font-size: 42px; font-weight: 800; letter-spacing: -2px; line-height: 1; }
 .plan-cents { font-size: 16px; font-weight: 700; vertical-align: super; color: var(--text2); }
-
 .plan-divider { height: 1px; background: var(--border); margin: 16px 0; }
-
 .plan-feature {
   display: flex; align-items: flex-start; gap: 8px;
   font-size: 12px; color: var(--text2); margin-bottom: 8px; line-height: 1.4;
 }
-.plan-feature::before { content: '✓'; color: var(--green); font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-
+.plan-feature::before { content: '\2713'; color: var(--green); font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 .plan-cta {
   margin-top: auto; padding-top: 18px;
   width: 100%; padding: 10px;
@@ -588,8 +595,168 @@ canvas { display: block; }
   color: var(--gold);
 }
 .plan.lifetime .plan-cta:hover { background: var(--gold); color: #000; border-color: var(--gold); }
-
 .plan-infinity { font-size: 28px; text-align: center; margin-bottom: 4px; opacity: 0.7; }
+
+/* ─── SHARKAI DOWNLOAD SECTION ─── */
+.sharkai-download-section {
+  position: relative; z-index: 1;
+  background: var(--bg);
+}
+.sharkai-download-inner {
+  max-width: 1200px; margin: 0 auto; padding: 40px 64px 100px;
+}
+
+.download-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 56px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .3s;
+}
+.download-card:hover { border-color: var(--border-hover); }
+
+.download-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 500px 300px at 20% 50%, rgba(46,255,165,0.04), transparent);
+  pointer-events: none;
+}
+
+.download-left {
+  position: relative; z-index: 1;
+}
+
+.download-left .product-tag {
+  margin-bottom: 16px;
+}
+
+.download-left h3 {
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 800; letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.download-left h3 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--green) 0%, var(--cyan) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.download-left p {
+  font-size: 15px; color: var(--text2);
+  line-height: 1.7; margin-bottom: 20px;
+}
+
+.download-note {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(46,255,165,0.05);
+  border: 1px solid rgba(46,255,165,0.15);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 12.5px; color: var(--text2);
+  line-height: 1.6;
+}
+.download-note-icon {
+  font-size: 18px; flex-shrink: 0; margin-top: 1px;
+}
+
+.download-right {
+  position: relative; z-index: 1;
+}
+
+.download-label {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 12px;
+}
+
+.download-terminal {
+  background: #0a0e18;
+  border: 1px solid rgba(46,255,165,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.terminal-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px;
+  background: rgba(46,255,165,0.04);
+  border-bottom: 1px solid rgba(46,255,165,0.1);
+}
+.terminal-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.terminal-dot.red { background: #FF4D6D; }
+.terminal-dot.yellow { background: #FFB347; }
+.terminal-dot.green { background: #2EFFA5; }
+.terminal-title {
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  margin-left: 8px;
+}
+
+.terminal-body {
+  padding: 20px 20px 24px;
+  position: relative;
+}
+
+.terminal-line {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 6px;
+}
+.terminal-prompt {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--green); flex-shrink: 0; font-weight: 700;
+}
+.terminal-command {
+  font-family: var(--mono); font-size: 13px;
+  color: var(--text);
+  word-break: break-all;
+  line-height: 1.5;
+}
+.terminal-command .cmd-keyword {
+  color: var(--cyan);
+}
+.terminal-command .cmd-pipe {
+  color: var(--gold);
+}
+.terminal-comment {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text3);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.download-copy-btn {
+  margin-top: 16px;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(46,255,165,0.08);
+  border: 1px solid rgba(46,255,165,0.25);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  color: var(--green);
+  cursor: pointer;
+  transition: all .2s;
+  letter-spacing: 0.5px;
+}
+.download-copy-btn:hover {
+  background: rgba(46,255,165,0.15);
+  border-color: rgba(46,255,165,0.4);
+  transform: translateY(-1px);
+}
+.download-copy-btn.copied {
+  color: var(--text);
+  border-color: var(--border-hover);
+  background: var(--purple-soft);
+}
+.download-copy-btn svg {
+  width: 14px; height: 14px; flex-shrink: 0;
+}
 
 /* TESTIMONIALS */
 .testi-grid {
@@ -717,14 +884,13 @@ footer {
   flex-shrink: 0;
 }
 
-/* SCROLL REVEAL */
 .reveal {
   opacity: 0; transform: translateY(24px);
   transition: opacity .7s ease, transform .7s ease;
 }
 .reveal.visible { opacity: 1; transform: none; }
 
-/* ─── TABLET ─── */
+/* TABLET */
 @media (max-width: 1024px) {
   nav { padding: 16px 32px; }
   .section-wrap { padding: 80px 32px; }
@@ -739,9 +905,12 @@ footer {
   .product-card { grid-template-columns: 1fr; }
   .product-card.reverse { direction: ltr; }
   .product-visual { min-height: 280px; }
+  .video-section .inner { padding: 0 32px; }
+  .download-card { grid-template-columns: 1fr; gap: 32px; padding: 36px; }
+  .sharkai-download-inner { padding: 40px 32px 80px; }
 }
 
-/* ─── MOBILE ─── */
+/* MOBILE */
 @media (max-width: 768px) {
   nav { padding: 14px 20px; }
   .nav-center { display: none; }
@@ -783,6 +952,10 @@ footer {
   .features-grid { grid-template-columns: 1fr; border-radius: 14px; }
   .feat-card { padding: 24px 20px; }
 
+  .video-section { padding: 56px 0; }
+  .video-section .inner { padding: 0 20px; }
+  .video-frame { border-radius: 12px; }
+
   .analytics-grid {
     grid-template-columns: 1fr;
     padding: 56px 20px;
@@ -804,6 +977,11 @@ footer {
   .pricing-grid { grid-template-columns: 1fr; gap: 12px; }
   .plan { padding: 22px 18px; }
   .plan-amount { font-size: 36px; }
+
+  .sharkai-download-inner { padding: 20px 20px 56px; }
+  .download-card { padding: 28px 20px; border-radius: 16px; }
+  .download-left h3 { font-size: 22px; }
+  .download-copy-btn { width: 100%; justify-content: center; }
 
   .testi-grid { grid-template-columns: 1fr; margin-top: 32px; gap: 12px; }
   .testi-card { padding: 22px 18px; }
@@ -878,15 +1056,11 @@ footer {
 <!-- HERO -->
 <div class="hero">
   <div class="hero-grid"></div>
-
   <div class="hero-badge"><span class="badge-dot"></span> Novidade: SharkAI Chegou</div>
-
   <h1>Software <em>Premium</em><br>para seu PC</h1>
-
   <p class="hero-sub">
     Otimização de desempenho e assistente de voz inteligente — tudo que seu PC precisa em um só lugar.
   </p>
-
   <div class="hero-actions">
     <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
       Nossos Produtos →
@@ -895,7 +1069,6 @@ footer {
       Ver Planos
     </button>
   </div>
-
   <div class="stats-bar">
     <div class="stat">
       <span class="stat-num" data-count="12400">0</span>
@@ -916,7 +1089,7 @@ footer {
   </div>
 </div>
 
-<!-- PRODUCTS SHOWCASE -->
+<!-- PRODUCTS -->
 <section id="products">
   <div class="products-section">
     <div class="products-inner">
@@ -926,7 +1099,6 @@ footer {
         <p class="section-sub">Conheça os dois softwares desenvolvidos pela SharkLabs para transformar seu PC.</p>
       </div>
 
-      <!-- SharkOptimizer -->
       <div class="product-card reveal">
         <div class="product-visual">
           <img src="produto1.png" alt="SharkOptimizer">
@@ -940,19 +1112,19 @@ footer {
           </p>
           <div class="product-highlights">
             <div class="product-highlight">
-              <span class="hl-icon hl-green">🎮</span>
+              <span class="hl-icon hl-green">&#127918;</span>
               <span>GPU &amp; FPS Booster — HAGS, NVIDIA Reflex, Shader Cache</span>
             </div>
             <div class="product-highlight">
-              <span class="hl-icon hl-cyan">🌐</span>
+              <span class="hl-icon hl-cyan">&#127760;</span>
               <span>Otimização de Rede — TCP BBR, DNS otimizado, QoS</span>
             </div>
             <div class="product-highlight">
-              <span class="hl-icon hl-purple">🧠</span>
+              <span class="hl-icon hl-purple">&#129504;</span>
               <span>Memória &amp; CPU — Large Pages, Ultimate Performance</span>
             </div>
             <div class="product-highlight">
-              <span class="hl-icon hl-gold">🔒</span>
+              <span class="hl-icon hl-gold">&#128274;</span>
               <span>Privacidade — Bloqueio de telemetria e limpeza</span>
             </div>
           </div>
@@ -963,7 +1135,6 @@ footer {
         </div>
       </div>
 
-      <!-- SharkAI -->
       <div class="product-card reverse reveal">
         <div class="product-visual">
           <img src="produto2.png" alt="SharkAI">
@@ -977,32 +1148,46 @@ footer {
           </p>
           <div class="product-highlights">
             <div class="product-highlight">
-              <span class="hl-icon hl-green">🎵</span>
+              <span class="hl-icon hl-green">&#127925;</span>
               <span>Toque músicas do YouTube e SoundCloud por voz</span>
             </div>
             <div class="product-highlight">
-              <span class="hl-icon hl-purple">🎙️</span>
+              <span class="hl-icon hl-purple">&#127908;</span>
               <span>Palavra de ativação configurável e voz em português</span>
             </div>
             <div class="product-highlight">
-              <span class="hl-icon hl-cyan">📺</span>
+              <span class="hl-icon hl-cyan">&#128250;</span>
               <span>Assista animes pelo Go Animes com playlists</span>
             </div>
             <div class="product-highlight">
-              <span class="hl-icon hl-gold">🖥️</span>
+              <span class="hl-icon hl-gold">&#128421;</span>
               <span>Abra/feche programas, sites e desligue o PC por voz</span>
             </div>
           </div>
           <div class="product-actions">
-            <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Começar Agora →</button>
+            <button class="btn-primary" onclick="document.getElementById('sharkai-download').scrollIntoView({behavior:'smooth'})">Download Gratuito →</button>
             <button class="btn-ghost" onclick="document.getElementById('sharkai-details').scrollIntoView({behavior:'smooth'})">Mais Detalhes</button>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
+
+<!-- VIDEO -->
+<div class="video-section" id="screenshots">
+  <div class="inner reveal">
+    <span class="section-tag" style="text-align:center;display:block">// Em Ação</span>
+    <h2 class="section-title" style="text-align:center;margin-bottom:8px">Veja funcionando</h2>
+    <p class="section-sub" style="margin:0 auto;text-align:center">Interface moderna, rápida e intuitiva.</p>
+    <div class="video-frame">
+      <video autoplay loop muted playsinline>
+        <source src="video.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="video-caption">DEMONSTRAÇÃO COMPLETA · 1:48</p>
+  </div>
+</div>
 
 <!-- FEATURES — SharkOptimizer -->
 <section id="features">
@@ -1014,37 +1199,37 @@ footer {
     </div>
     <div class="features-grid reveal">
       <div class="feat-card">
-        <div class="feat-icon">🎮</div>
+        <div class="feat-icon">&#127918;</div>
         <h3>GPU &amp; FPS Booster</h3>
         <p>HAGS, NVIDIA Reflex, Frame Generation, Shader Cache, Modo Máximo de Energia da GPU e ajustes de driver para máximo framerate.</p>
         <span class="feat-pill pill-g">+FPS e Menos Stutter</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🌐</div>
+        <div class="feat-icon">&#127760;</div>
         <h3>Otimização de Rede</h3>
         <p>Redução de latência com TCP BBR, desativação Nagle, DNS otimizado, QoS e ajustes de buffer para jogos online.</p>
         <span class="feat-pill pill-c">Menor Ping</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🧠</div>
+        <div class="feat-icon">&#129504;</div>
         <h3>Gerenciamento de Memória</h3>
         <p>Large Pages, compressão inteligente, arquivo de paginação otimizado e prioridade para jogos.</p>
         <span class="feat-pill pill-p">Mais RAM Efetiva</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">⚙️</div>
+        <div class="feat-icon">&#9881;&#65039;</div>
         <h3>Sistema &amp; CPU</h3>
         <p>Plano Ultimate Performance, agendador de CPU, HPET, Game Mode e desativação de telemetria do Windows.</p>
         <span class="feat-pill pill-o">Desempenho Máximo</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🔧</div>
+        <div class="feat-icon">&#128295;</div>
         <h3>Serviços do Windows</h3>
         <p>Desativação inteligente de serviços em segundo plano, liberando CPU e RAM para seus jogos.</p>
         <span class="feat-pill pill-g">Menos Background</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🔒</div>
+        <div class="feat-icon">&#128274;</div>
         <h3>Privacidade &amp; Limpeza</h3>
         <p>Bloqueio total de telemetria, anúncios e rastreamento, mantendo seu sistema limpo e seguro.</p>
         <span class="feat-pill pill-c">Sistema Leve</span>
@@ -1063,37 +1248,37 @@ footer {
     </div>
     <div class="features-grid reveal">
       <div class="feat-card">
-        <div class="feat-icon">🎵</div>
+        <div class="feat-icon">&#127925;</div>
         <h3>Música por Voz</h3>
         <p>Toque músicas do YouTube ou SoundCloud por comando de voz. Fila, playlist, reprodução automática de músicas parecidas e volume ajustável.</p>
         <span class="feat-pill pill-g">AUTO Play</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🎙️</div>
+        <div class="feat-icon">&#127908;</div>
         <h3>Assistente de Voz</h3>
         <p>Palavra de ativação configurável ("Shark"), 4 vozes em português via Edge TTS, velocidade e tom ajustáveis. Fala as respostas em voz alta.</p>
         <span class="feat-pill pill-p">4 Vozes PT-BR</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">📺</div>
+        <div class="feat-icon">&#128250;</div>
         <h3>Animes &amp; Streaming</h3>
         <p>Assista animes diretamente pelo Go Animes integrado ao app. Crie playlists personalizadas e organize seus episódios favoritos.</p>
         <span class="feat-pill pill-o">Go Animes</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🖥️</div>
+        <div class="feat-icon">&#128421;</div>
         <h3>Controle do Sistema</h3>
         <p>Abra e feche programas, sites, desligue ou reinicie o PC — tudo por voz ou texto. Linguagem natural, sem frases fixas.</p>
         <span class="feat-pill pill-c">Voz + Texto</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">⚡</div>
+        <div class="feat-icon">&#9889;</div>
         <h3>Atalhos Personalizados</h3>
         <p>Crie apelidos de voz para qualquer site, programa ou comando do sistema. Basta dizer o nome para executar.</p>
         <span class="feat-pill pill-g">Comando Custom</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🔐</div>
+        <div class="feat-icon">&#128272;</div>
         <h3>Login Seguro</h3>
         <p>Conta com proteção dedicada, uma conta por computador. Sessão lembrada após primeiro login. Painel com status de dependências.</p>
         <span class="feat-pill pill-r">Conta Protegida</span>
@@ -1179,13 +1364,13 @@ footer {
   </div>
 </div>
 
-<!-- PRICING -->
+<!-- PRICING — SharkOptimizer -->
 <div class="pricing-section" id="pricing">
   <div class="pricing-inner">
     <div class="pricing-header reveal">
       <span class="section-tag" style="display:block">// Planos — SharkOptimizer</span>
       <h2 class="section-title">Escolha seu plano</h2>
-      <p class="section-sub">Acesso completo a todas as otimizações. Sem pegadinhas.</p>
+      <p class="section-sub">Acesso completo a todas as otimizações do SharkOptimizer. O SharkAI é separado — veja abaixo.</p>
     </div>
     <div class="pricing-grid reveal">
 
@@ -1195,11 +1380,11 @@ footer {
           <span class="plan-currency">R$</span><span class="plan-amount">35</span><span class="plan-cents">,99</span>
         </div>
         <div class="plan-divider"></div>
+        <div class="plan-feature">Todas as otimizações</div>
         <div class="plan-feature">Atualizações futuras</div>
         <div class="plan-feature">Suporte VIP</div>
         <div class="plan-feature">PCs ilimitados</div>
         <div class="plan-feature">Discord exclusivo</div>
-        <div class="plan-feature">Config. personalizada</div>
         <button class="plan-cta" onclick="window.open('https://sharklabs.shop/','_blank')">Assinar</button>
       </div>
 
@@ -1209,11 +1394,11 @@ footer {
           <span class="plan-currency">R$</span><span class="plan-amount">65</span><span class="plan-cents">,99</span>
         </div>
         <div class="plan-divider"></div>
+        <div class="plan-feature">Todas as otimizações</div>
         <div class="plan-feature">Atualizações futuras</div>
         <div class="plan-feature">Suporte VIP</div>
         <div class="plan-feature">PCs ilimitados</div>
         <div class="plan-feature">Discord exclusivo</div>
-        <div class="plan-feature">Config. personalizada</div>
         <button class="plan-cta" onclick="window.open('https://sharklabs.shop/','_blank')">Assinar</button>
       </div>
 
@@ -1224,11 +1409,11 @@ footer {
           <span class="plan-currency">R$</span><span class="plan-amount">135</span><span class="plan-cents">,99</span>
         </div>
         <div class="plan-divider"></div>
+        <div class="plan-feature">Todas as otimizações</div>
         <div class="plan-feature">Atualizações futuras</div>
         <div class="plan-feature">Suporte VIP</div>
         <div class="plan-feature">PCs ilimitados</div>
         <div class="plan-feature">Discord exclusivo</div>
-        <div class="plan-feature">Config. personalizada</div>
         <button class="plan-cta" onclick="window.open('https://sharklabs.shop/','_blank')">Assinar</button>
       </div>
 
@@ -1238,30 +1423,76 @@ footer {
           <span class="plan-currency">R$</span><span class="plan-amount">255</span><span class="plan-cents">,99</span>
         </div>
         <div class="plan-divider"></div>
+        <div class="plan-feature">Todas as otimizações</div>
         <div class="plan-feature">Atualizações futuras</div>
         <div class="plan-feature">Suporte VIP</div>
         <div class="plan-feature">PCs ilimitados</div>
         <div class="plan-feature">Discord exclusivo</div>
-        <div class="plan-feature">Config. personalizada</div>
         <button class="plan-cta" onclick="window.open('https://sharklabs.shop/','_blank')">Assinar</button>
       </div>
 
       <div class="plan lifetime" onclick="selectPlan(this)">
-        <div class="plan-infinity">∞</div>
+        <div class="plan-infinity">&#8734;</div>
         <div class="plan-period">Vitalício</div>
         <div class="plan-price-wrap">
           <span class="plan-currency">R$</span><span class="plan-amount">550</span><span class="plan-cents">,99</span>
         </div>
         <div class="plan-divider"></div>
         <div class="plan-feature">Acesso eterno</div>
+        <div class="plan-feature">Todas as otimizações</div>
         <div class="plan-feature">Atualizações futuras</div>
         <div class="plan-feature">Suporte VIP</div>
         <div class="plan-feature">PCs ilimitados</div>
         <div class="plan-feature">Discord exclusivo</div>
-        <div class="plan-feature">Config. personalizada</div>
         <button class="plan-cta" onclick="window.open('https://sharklabs.shop/','_blank')">Comprar</button>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- SHARKAI DOWNLOAD -->
+<div class="sharkai-download-section" id="sharkai-download">
+  <div class="sharkai-download-inner">
+    <div class="download-card reveal">
+      <div class="download-left">
+        <span class="product-tag tag-new">Download Gratuito</span>
+        <h3>Shark<em>AI</em> — Assistente de Voz</h3>
+        <p>
+          Instale o SharkAI direto pelo PowerShell. Controle seu PC por voz, toque músicas, assista animes e muito mais — tudo em português.
+        </p>
+        <div class="download-note">
+          <span class="download-note-icon">&#9888;&#65039;</span>
+          <span>Abra o <strong>PowerShell</strong> como Administrador e cole o comando ao lado. O download e instalação são automáticos.</span>
+        </div>
+      </div>
+      <div class="download-right">
+        <div class="download-label">// Via PowerShell</div>
+        <div class="download-terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">PowerShell</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="terminal-prompt">PS C:\&gt;</span>
+              <span class="terminal-command">
+                <span class="cmd-keyword">irm</span> https://sharklabs.store/IA <span class="cmd-pipe">|</span> <span class="cmd-keyword">iex</span>
+              </span>
+            </div>
+            <div class="terminal-comment"># Baixa e instala o SharkAI automaticamente</div>
+          </div>
+        </div>
+        <button class="download-copy-btn" id="copyBtn" onclick="copyCommand()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span id="copyText">Copiar Comando</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -1324,12 +1555,12 @@ footer {
         <div class="faq-a"><div class="faq-a-inner">A SharkLabs é uma equipe de desenvolvimento de software focada em performance e produtividade para PC. Desenvolvemos o SharkOptimizer (otimização de jogos) e o SharkAI (assistente de voz inteligente).</div></div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">Como funciona a ativação do SharkOptimizer? <span class="faq-icon">+</span></div>
-        <div class="faq-a"><div class="faq-a-inner">Após a compra, você recebe acesso imediato ao painel. Basta baixar o programa e aplicar as otimizações desejadas. O processo é simples e guiado.</div></div>
+        <div class="faq-q">Os planos incluem o SharkAI? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Não. Os planos são exclusivamente para o SharkOptimizer. O SharkAI é um software separado, disponível gratuitamente para download via PowerShell.</div></div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">O SharkAI é gratuito? <span class="faq-icon">+</span></div>
-        <div class="faq-a"><div class="faq-a-inner">O SharkAI está incluso em todos os planos da SharkLabs. Ao assinar qualquer plano, você tem acesso ao SharkOptimizer e ao SharkAI.</div></div>
+        <div class="faq-q">Como instalo o SharkAI? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Abra o PowerShell como Administrador e execute: irm https://sharklabs.store/IA | iex — O download e instalação são feitos automaticamente.</div></div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">O SharkAI funciona offline? <span class="faq-icon">+</span></div>
@@ -1337,7 +1568,7 @@ footer {
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">O plano vitalício inclui atualizações? <span class="faq-icon">+</span></div>
-        <div class="faq-a"><div class="faq-a-inner">Sim! Acesso eterno a todas as otimizações e recursos atuais e futuros sem custo adicional. Atualizações contínuas são garantidas.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Sim! Acesso eterno a todas as otimizações do SharkOptimizer atuais e futuras sem custo adicional. Atualizações contínuas são garantidas.</div></div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">É seguro usar os produtos? <span class="faq-icon">+</span></div>
@@ -1392,9 +1623,9 @@ window.addEventListener('scroll', () => {
 
 // MOBILE MENU
 const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-document.querySelectorAll('.nav-center a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+const navLinksEl = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => navLinksEl.classList.toggle('open'));
+document.querySelectorAll('.nav-center a').forEach(a => a.addEventListener('click', () => navLinksEl.classList.remove('open')));
 
 // SCROLL REVEAL
 const revealObs = new IntersectionObserver(entries => {
@@ -1441,6 +1672,20 @@ function toggleFaq(item) {
 function selectPlan(card) {
   document.querySelectorAll('.plan').forEach(p => p.style.boxShadow = '');
   card.style.boxShadow = '0 0 0 2px var(--purple), 0 0 40px rgba(124,92,252,0.3)';
+}
+
+// COPY COMMAND
+function copyCommand() {
+  const btn = document.getElementById('copyBtn');
+  const text = document.getElementById('copyText');
+  navigator.clipboard.writeText('irm https://sharklabs.store/IA | iex').then(() => {
+    btn.classList.add('copied');
+    text.textContent = 'Copiado!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      text.textContent = 'Copiar Comando';
+    }, 2500);
+  });
 }
 
 // FPS CHART
