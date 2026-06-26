@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="og:title" content="SharkOptimizer — Otimizador de PC Premium">
-<meta property="og:description" content="Aumente seu FPS, reduza latência e deixe seu PC muito mais rápido com otimizações profissionais para Windows 10/11.">
+<meta property="og:title" content="SharkLabs TEAM — Software Premium para PC">
+<meta property="og:description" content="SharkOptimizer e SharkAI — otimização de PC e assistente de voz inteligente para Windows.">
 <meta property="og:image" content="https://github.com/TheVoidSharkLabs/thevoidsharklabs.github.io/blob/main/logo.jpeg?raw=true">
 <meta property="og:url" content="https://sharklabs.store/">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#7C5CFC">
 <meta name="twitter:card" content="summary_large_image">
-<title>SharkOptimizer — Otimizador de PC Premium</title>
+<title>SharkLabs TEAM — Software Premium para PC</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── NOISE OVERLAY ─── */
+/* NOISE */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -59,7 +59,7 @@ body::before {
   opacity: 0.4;
 }
 
-/* ─── GLOW ORBS ─── */
+/* ORBS */
 .orb-canvas {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
 }
@@ -73,7 +73,7 @@ body::before {
   to   { transform: translate(var(--dx, 60px), var(--dy, -40px)) scale(var(--ds, 1.1)); }
 }
 
-/* ─── NAV ─── */
+/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -118,7 +118,7 @@ nav.scrolled { padding: 14px 64px; }
 
 .hamburger { display: none; font-size: 24px; cursor: pointer; color: var(--text); background: none; border: none; }
 
-/* ─── HERO ─── */
+/* HERO */
 .hero {
   min-height: 100vh;
   display: flex; flex-direction: column;
@@ -136,11 +136,6 @@ nav.scrolled { padding: 14px 64px; }
   background-size: 80px 80px;
   mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 20%, transparent 100%);
 }
-
-.hero-line {
-  position: absolute; z-index: 0; pointer-events: none;
-}
-.hero-line svg { width: 100%; height: 100%; }
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
@@ -177,7 +172,7 @@ nav.scrolled { padding: 14px 64px; }
 }
 
 .hero-sub {
-  max-width: 520px;
+  max-width: 560px;
   margin: 20px auto 0;
   font-size: 17px;
   font-weight: 400;
@@ -221,7 +216,7 @@ nav.scrolled { padding: 14px 64px; }
   background: var(--purple-soft);
 }
 
-/* ─── STATS BAR ─── */
+/* STATS BAR */
 .stats-bar {
   display: flex; justify-content: center; flex-wrap: wrap;
   gap: 0;
@@ -252,7 +247,7 @@ nav.scrolled { padding: 14px 64px; }
 .stat-num span { color: var(--accent); }
 .stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; font-weight: 500; }
 
-/* ─── SECTION UTILS ─── */
+/* SECTION UTILS */
 .section-wrap {
   max-width: 1200px; margin: 0 auto; padding: 100px 64px;
   position: relative; z-index: 1;
@@ -274,7 +269,117 @@ nav.scrolled { padding: 14px 64px; }
   max-width: 480px; line-height: 1.65;
 }
 
-/* ─── FEATURES ─── */
+/* ─── PRODUCTS SHOWCASE ─── */
+.products-section {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+.products-inner {
+  max-width: 1200px; margin: 0 auto; padding: 100px 64px;
+}
+.products-header {
+  text-align: center; margin-bottom: 64px;
+}
+.products-header .section-sub { margin: 0 auto; }
+
+.product-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  transition: border-color .3s;
+  position: relative;
+}
+.product-card:hover { border-color: var(--border-hover); }
+
+.product-card.reverse { direction: rtl; }
+.product-card.reverse > * { direction: ltr; }
+
+.product-visual {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 400px;
+  overflow: hidden;
+}
+.product-visual img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .6s ease;
+}
+.product-card:hover .product-visual img {
+  transform: scale(1.03);
+}
+.product-visual-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(124,92,252,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.product-info {
+  padding: 48px 44px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.product-tag {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 100px;
+  display: inline-block; width: fit-content; margin-bottom: 20px;
+}
+.tag-new {
+  color: var(--green);
+  background: rgba(46,255,165,0.08);
+  border: 1px solid rgba(46,255,165,0.25);
+}
+.tag-popular {
+  color: var(--accent);
+  background: rgba(168,139,255,0.08);
+  border: 1px solid rgba(168,139,255,0.25);
+}
+
+.product-name {
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 800; letter-spacing: -1.5px;
+  margin-bottom: 14px;
+}
+.product-name em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--cyan) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.product-desc {
+  font-size: 15px; color: var(--text2);
+  line-height: 1.7; margin-bottom: 28px;
+}
+
+.product-highlights {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 32px;
+}
+.product-highlight {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13.5px; color: var(--text2);
+}
+.product-highlight .hl-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.hl-green { background: rgba(46,255,165,0.1); border: 1px solid rgba(46,255,165,0.2); }
+.hl-purple { background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.2); }
+.hl-cyan { background: rgba(46,224,255,0.1); border: 1px solid rgba(46,224,255,0.2); }
+.hl-gold { background: rgba(255,179,71,0.1); border: 1px solid rgba(255,179,71,0.2); }
+
+.product-actions {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+
+/* FEATURES */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -317,35 +422,9 @@ nav.scrolled { padding: 14px 64px; }
 .pill-c { color: var(--cyan); background: rgba(46,224,255,0.08); border: 1px solid rgba(46,224,255,0.2); }
 .pill-p { color: var(--accent); background: rgba(168,139,255,0.08); border: 1px solid rgba(168,139,255,0.2); }
 .pill-o { color: var(--gold); background: rgba(255,179,71,0.08); border: 1px solid rgba(255,179,71,0.2); }
+.pill-r { color: var(--red); background: rgba(255,77,109,0.08); border: 1px solid rgba(255,77,109,0.2); }
 
-/* ─── VIDEO SECTION ─── */
-.video-section {
-  background: var(--bg2);
-  position: relative; z-index: 1;
-  padding: 100px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.video-section .inner {
-  max-width: 1100px; margin: 0 auto; padding: 0 64px;
-  text-align: center;
-}
-.video-frame {
-  margin-top: 48px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
-  position: relative;
-}
-.video-frame video { display: block; width: 100%; }
-.video-caption {
-  margin-top: 16px;
-  font-family: var(--mono); font-size: 11px; color: var(--text3);
-  letter-spacing: 1px;
-}
-
-/* ─── ANALYTICS ─── */
+/* ANALYTICS */
 .analytics-section {
   position: relative; z-index: 1;
 }
@@ -397,7 +476,7 @@ nav.scrolled { padding: 14px 64px; }
 }
 canvas { display: block; }
 
-/* ─── COUNTER CARDS ─── */
+/* COUNTERS */
 .counters {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 12px;
@@ -422,7 +501,7 @@ canvas { display: block; }
 .counter-num .accent { color: var(--accent); }
 .counter-desc { font-size: 12px; color: var(--text3); margin-top: 6px; font-weight: 500; }
 
-/* ─── PRICING ─── */
+/* PRICING */
 .pricing-section {
   position: relative; z-index: 1;
   background: var(--bg2);
@@ -512,7 +591,7 @@ canvas { display: block; }
 
 .plan-infinity { font-size: 28px; text-align: center; margin-bottom: 4px; opacity: 0.7; }
 
-/* ─── TESTIMONIALS ─── */
+/* TESTIMONIALS */
 .testi-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
   margin-top: 48px;
@@ -534,10 +613,8 @@ canvas { display: block; }
 .testi-name { font-size: 14px; font-weight: 700; }
 .testi-role { font-size: 11px; color: var(--text3); font-family: var(--mono); }
 
-/* ─── FAQ ─── */
-.faq-wrap {
-  max-width: 760px; margin: 0 auto;
-}
+/* FAQ */
+.faq-wrap { max-width: 760px; margin: 0 auto; }
 .faq-item {
   border: 1px solid var(--border);
   border-radius: 12px; margin-bottom: 10px; overflow: hidden;
@@ -564,10 +641,10 @@ canvas { display: block; }
   font-size: 14px; color: var(--text2); line-height: 1.7;
   background: var(--surface);
 }
-.faq-item.open .faq-a { max-height: 200px; }
+.faq-item.open .faq-a { max-height: 250px; }
 .faq-a-inner { padding: 0 24px 20px; }
 
-/* ─── CTA FINAL ─── */
+/* CTA FINAL */
 .cta-final {
   position: relative; z-index: 1;
   text-align: center; padding: 80px 40px;
@@ -594,7 +671,7 @@ canvas { display: block; }
   position: relative; z-index: 1;
 }
 
-/* ─── FOOTER ─── */
+/* FOOTER */
 footer {
   border-top: 1px solid var(--border);
   padding: 48px 64px;
@@ -614,7 +691,7 @@ footer {
 .footer-links a:hover { color: var(--accent); }
 .footer-copy { font-size: 12px; color: var(--text3); }
 
-/* ─── NOTIFICATIONS ─── */
+/* NOTIFICATIONS */
 .notif {
   position: fixed; bottom: 20px; right: 20px;
   background: var(--surface);
@@ -639,9 +716,8 @@ footer {
   width: 36px; height: 36px; border-radius: 8px; object-fit: contain;
   flex-shrink: 0;
 }
-.notif-icon { font-size: 24px; flex-shrink: 0; }
 
-/* ─── SCROLL REVEAL ─── */
+/* SCROLL REVEAL */
 .reveal {
   opacity: 0; transform: translateY(24px);
   transition: opacity .7s ease, transform .7s ease;
@@ -659,7 +735,10 @@ footer {
   .features-grid { grid-template-columns: repeat(2, 1fr); }
   .testi-grid { grid-template-columns: repeat(2, 1fr); }
   footer { padding: 40px 32px; }
-  .video-section .inner { padding: 0 32px; }
+  .products-inner { padding: 80px 32px; }
+  .product-card { grid-template-columns: 1fr; }
+  .product-card.reverse { direction: ltr; }
+  .product-visual { min-height: 280px; }
 }
 
 /* ─── MOBILE ─── */
@@ -680,14 +759,12 @@ footer {
   }
   .nav-center.open a { font-size: 17px; color: var(--text); }
 
-  /* HERO */
   .hero { padding: 100px 20px 48px; }
   .hero h1 { font-size: clamp(36px, 10vw, 52px); letter-spacing: -1.5px; }
   .hero-sub { font-size: 15px; }
   .hero-actions { flex-direction: column; align-items: center; gap: 10px; }
   .btn-primary, .btn-ghost { width: 100%; max-width: 320px; text-align: center; }
 
-  /* STATS BAR */
   .stats-bar {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -699,21 +776,13 @@ footer {
   .stat:nth-child(3), .stat:nth-child(4) { border-bottom: none; }
   .stat-num { font-size: 26px; }
 
-  /* SECTIONS */
   .section-wrap { padding: 56px 20px; }
   .section-title { font-size: clamp(24px, 7vw, 34px); letter-spacing: -1px; }
   .section-sub { font-size: 15px; }
 
-  /* FEATURES */
   .features-grid { grid-template-columns: 1fr; border-radius: 14px; }
   .feat-card { padding: 24px 20px; }
 
-  /* VIDEO */
-  .video-section { padding: 56px 0; }
-  .video-section .inner { padding: 0 20px; }
-  .video-frame { border-radius: 12px; }
-
-  /* ANALYTICS */
   .analytics-grid {
     grid-template-columns: 1fr;
     padding: 56px 20px;
@@ -723,7 +792,6 @@ footer {
   .chart-fps { font-size: 40px; }
   #mainChartWrap { height: 180px; }
 
-  /* COUNTERS */
   .counters {
     grid-template-columns: 1fr 1fr;
     padding: 0 20px 56px;
@@ -732,41 +800,39 @@ footer {
   .counter-card { padding: 20px 14px; }
   .counter-num { font-size: 28px; }
 
-  /* PRICING */
   .pricing-inner { padding: 56px 20px; }
-  .pricing-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+  .pricing-grid { grid-template-columns: 1fr; gap: 12px; }
   .plan { padding: 22px 18px; }
   .plan-amount { font-size: 36px; }
 
-  /* TESTIMONIALS */
   .testi-grid { grid-template-columns: 1fr; margin-top: 32px; gap: 12px; }
   .testi-card { padding: 22px 18px; }
 
-  /* FAQ */
   .faq-q { font-size: 13.5px; padding: 18px 18px; }
   .faq-a-inner { padding: 0 18px 16px; }
 
-  /* CTA FINAL */
   .cta-final { padding: 56px 20px; }
   .cta-box { padding: 36px 22px; border-radius: 18px; }
   .cta-box h2 { font-size: 28px; letter-spacing: -1px; }
   .cta-box p { font-size: 14px; }
 
-  /* FOOTER */
   footer {
     flex-direction: column; gap: 20px;
     text-align: center; padding: 36px 20px;
   }
   .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
 
-  /* NOTIFICATIONS */
   .notif { width: calc(100vw - 32px); right: 16px; bottom: 16px; }
+
+  .products-inner { padding: 56px 20px; }
+  .product-card { border-radius: 14px; }
+  .product-info { padding: 28px 20px; }
+  .product-visual { min-height: 220px; }
+  .product-actions { flex-direction: column; }
+  .product-actions .btn-primary,
+  .product-actions .btn-ghost { width: 100%; text-align: center; }
 }
 
-/* ─── SMALL PHONES ─── */
 @media (max-width: 390px) {
   .hero h1 { font-size: 34px; }
   .hero-badge { font-size: 11px; padding: 5px 12px; }
@@ -780,7 +846,6 @@ footer {
   .cta-box h2 { font-size: 24px; }
 }
 
-/* Chart responsiveness */
 #mainChartWrap { position: relative; height: 220px; }
 </style>
 </head>
@@ -796,37 +861,38 @@ footer {
 <!-- NAV -->
 <nav id="mainNav">
   <a class="nav-logo" href="#">
-    <img src="https://github.com/TheVoidSharkLabs/thevoidsharklabs.github.io/blob/main/Slogo.png?raw=true" alt="SharkOptimizer logo">
-    SharkOptimizer
+    <img src="https://github.com/TheVoidSharkLabs/thevoidsharklabs.github.io/blob/main/Slogo.png?raw=true" alt="SharkLabs logo">
+    SharkLabs <span style="color:var(--accent);font-weight:400;font-size:14px;margin-left:2px">TEAM</span>
   </a>
   <div class="nav-center" id="navLinks">
+    <a href="#products">Produtos</a>
     <a href="#features">Recursos</a>
     <a href="#analytics">Resultados</a>
     <a href="#pricing">Preços</a>
     <a href="#faq">FAQ</a>
   </div>
   <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Ver Planos</button>
-  <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+  <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-grid"></div>
 
-  <div class="hero-badge"><span class="badge-dot"></span> Otimizador #1 do Brasil</div>
+  <div class="hero-badge"><span class="badge-dot"></span> Novidade: SharkAI Chegou</div>
 
-  <h1>Máximo <em>FPS</em><br>para seu PC</h1>
+  <h1>Software <em>Premium</em><br>para seu PC</h1>
 
   <p class="hero-sub">
-    Otimizações profissionais para Windows 10/11 — mais FPS, menos latência, zero travamentos. Em um clique.
+    Otimização de desempenho e assistente de voz inteligente — tudo que seu PC precisa em um só lugar.
   </p>
 
   <div class="hero-actions">
-    <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
-      Ver Planos →
+    <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+      Nossos Produtos →
     </button>
-    <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
-      Conhecer Recursos
+    <button class="btn-ghost" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
+      Ver Planos
     </button>
   </div>
 
@@ -850,18 +916,106 @@ footer {
   </div>
 </div>
 
-<!-- FEATURES -->
+<!-- PRODUCTS SHOWCASE -->
+<section id="products">
+  <div class="products-section">
+    <div class="products-inner">
+      <div class="products-header reveal">
+        <span class="section-tag">// Produtos</span>
+        <h2 class="section-title">Duas ferramentas.<br>Um ecossistema.</h2>
+        <p class="section-sub">Conheça os dois softwares desenvolvidos pela SharkLabs para transformar seu PC.</p>
+      </div>
+
+      <!-- SharkOptimizer -->
+      <div class="product-card reveal">
+        <div class="product-visual">
+          <img src="produto1.png" alt="SharkOptimizer">
+          <div class="product-visual-overlay"></div>
+        </div>
+        <div class="product-info">
+          <span class="product-tag tag-popular">Mais Popular</span>
+          <h3 class="product-name">Shark<em>Optimizer</em></h3>
+          <p class="product-desc">
+            Otimizador de PC profissional para Windows 10/11. Aumente seu FPS, reduza latência e elimine travamentos com dezenas de ajustes avançados aplicados em um clique.
+          </p>
+          <div class="product-highlights">
+            <div class="product-highlight">
+              <span class="hl-icon hl-green">🎮</span>
+              <span>GPU &amp; FPS Booster — HAGS, NVIDIA Reflex, Shader Cache</span>
+            </div>
+            <div class="product-highlight">
+              <span class="hl-icon hl-cyan">🌐</span>
+              <span>Otimização de Rede — TCP BBR, DNS otimizado, QoS</span>
+            </div>
+            <div class="product-highlight">
+              <span class="hl-icon hl-purple">🧠</span>
+              <span>Memória &amp; CPU — Large Pages, Ultimate Performance</span>
+            </div>
+            <div class="product-highlight">
+              <span class="hl-icon hl-gold">🔒</span>
+              <span>Privacidade — Bloqueio de telemetria e limpeza</span>
+            </div>
+          </div>
+          <div class="product-actions">
+            <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Ver Planos →</button>
+            <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Saiba Mais</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SharkAI -->
+      <div class="product-card reverse reveal">
+        <div class="product-visual">
+          <img src="produto2.png" alt="SharkAI">
+          <div class="product-visual-overlay"></div>
+        </div>
+        <div class="product-info">
+          <span class="product-tag tag-new">Novidade</span>
+          <h3 class="product-name">Shark<em>AI</em></h3>
+          <p class="product-desc">
+            Assistente de voz e texto para Windows. Controle músicas, programas, sites e o próprio computador conversando em português — por microfone ou digitando.
+          </p>
+          <div class="product-highlights">
+            <div class="product-highlight">
+              <span class="hl-icon hl-green">🎵</span>
+              <span>Toque músicas do YouTube e SoundCloud por voz</span>
+            </div>
+            <div class="product-highlight">
+              <span class="hl-icon hl-purple">🎙️</span>
+              <span>Palavra de ativação configurável e voz em português</span>
+            </div>
+            <div class="product-highlight">
+              <span class="hl-icon hl-cyan">📺</span>
+              <span>Assista animes pelo Go Animes com playlists</span>
+            </div>
+            <div class="product-highlight">
+              <span class="hl-icon hl-gold">🖥️</span>
+              <span>Abra/feche programas, sites e desligue o PC por voz</span>
+            </div>
+          </div>
+          <div class="product-actions">
+            <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Começar Agora →</button>
+            <button class="btn-ghost" onclick="document.getElementById('sharkai-details').scrollIntoView({behavior:'smooth'})">Mais Detalhes</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES — SharkOptimizer -->
 <section id="features">
   <div class="section-wrap">
     <div class="section-header reveal">
-      <span class="section-tag">// Recursos</span>
+      <span class="section-tag">// SharkOptimizer — Recursos</span>
       <h2 class="section-title">Tudo que seu PC precisa<br>para voar</h2>
       <p class="section-sub">Ferramentas profissionais desenvolvidas para máximo desempenho em jogos e aplicações.</p>
     </div>
     <div class="features-grid reveal">
       <div class="feat-card">
         <div class="feat-icon">🎮</div>
-        <h3>GPU & FPS Booster</h3>
+        <h3>GPU &amp; FPS Booster</h3>
         <p>HAGS, NVIDIA Reflex, Frame Generation, Shader Cache, Modo Máximo de Energia da GPU e ajustes de driver para máximo framerate.</p>
         <span class="feat-pill pill-g">+FPS e Menos Stutter</span>
       </div>
@@ -879,7 +1033,7 @@ footer {
       </div>
       <div class="feat-card">
         <div class="feat-icon">⚙️</div>
-        <h3>Sistema & CPU</h3>
+        <h3>Sistema &amp; CPU</h3>
         <p>Plano Ultimate Performance, agendador de CPU, HPET, Game Mode e desativação de telemetria do Windows.</p>
         <span class="feat-pill pill-o">Desempenho Máximo</span>
       </div>
@@ -891,7 +1045,7 @@ footer {
       </div>
       <div class="feat-card">
         <div class="feat-icon">🔒</div>
-        <h3>Privacidade & Limpeza</h3>
+        <h3>Privacidade &amp; Limpeza</h3>
         <p>Bloqueio total de telemetria, anúncios e rastreamento, mantendo seu sistema limpo e seguro.</p>
         <span class="feat-pill pill-c">Sistema Leve</span>
       </div>
@@ -899,26 +1053,60 @@ footer {
   </div>
 </section>
 
-<!-- VIDEO -->
-<div class="video-section" id="screenshots">
-  <div class="inner reveal">
-    <span class="section-tag" style="text-align:center;display:block">// Em Ação</span>
-    <h2 class="section-title" style="text-align:center;margin-bottom:8px">Veja funcionando</h2>
-    <p class="section-sub" style="margin:0 auto;text-align:center">Interface moderna, rápida e intuitiva.</p>
-    <div class="video-frame">
-      <video autoplay loop muted playsinline>
-        <source src="video.mp4" type="video/mp4">
-      </video>
+<!-- SHARKAI DETAILS -->
+<section id="sharkai-details">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <span class="section-tag">// SharkAI — Detalhes</span>
+      <h2 class="section-title">Converse com seu PC<br>em português</h2>
+      <p class="section-sub">Controle total por voz ou texto — música, programas, animes, navegação e muito mais.</p>
     </div>
-    <p class="video-caption">DEMONSTRAÇÃO COMPLETA · 1:48</p>
+    <div class="features-grid reveal">
+      <div class="feat-card">
+        <div class="feat-icon">🎵</div>
+        <h3>Música por Voz</h3>
+        <p>Toque músicas do YouTube ou SoundCloud por comando de voz. Fila, playlist, reprodução automática de músicas parecidas e volume ajustável.</p>
+        <span class="feat-pill pill-g">AUTO Play</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎙️</div>
+        <h3>Assistente de Voz</h3>
+        <p>Palavra de ativação configurável ("Shark"), 4 vozes em português via Edge TTS, velocidade e tom ajustáveis. Fala as respostas em voz alta.</p>
+        <span class="feat-pill pill-p">4 Vozes PT-BR</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📺</div>
+        <h3>Animes &amp; Streaming</h3>
+        <p>Assista animes diretamente pelo Go Animes integrado ao app. Crie playlists personalizadas e organize seus episódios favoritos.</p>
+        <span class="feat-pill pill-o">Go Animes</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🖥️</div>
+        <h3>Controle do Sistema</h3>
+        <p>Abra e feche programas, sites, desligue ou reinicie o PC — tudo por voz ou texto. Linguagem natural, sem frases fixas.</p>
+        <span class="feat-pill pill-c">Voz + Texto</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <h3>Atalhos Personalizados</h3>
+        <p>Crie apelidos de voz para qualquer site, programa ou comando do sistema. Basta dizer o nome para executar.</p>
+        <span class="feat-pill pill-g">Comando Custom</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔐</div>
+        <h3>Login Seguro</h3>
+        <p>Conta com proteção dedicada, uma conta por computador. Sessão lembrada após primeiro login. Painel com status de dependências.</p>
+        <span class="feat-pill pill-r">Conta Protegida</span>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- ANALYTICS -->
 <div id="analytics" class="analytics-section">
   <div class="analytics-grid">
     <div class="reveal">
-      <span class="section-tag">// Resultados Reais</span>
+      <span class="section-tag">// SharkOptimizer — Resultados Reais</span>
       <h2 class="section-title">Desempenho que<br>você sente</h2>
       <p class="section-sub" style="margin-bottom:32px">Melhorias comprovadas em FPS, latência e estabilidade do sistema.</p>
 
@@ -995,7 +1183,7 @@ footer {
 <div class="pricing-section" id="pricing">
   <div class="pricing-inner">
     <div class="pricing-header reveal">
-      <span class="section-tag" style="display:block">// Planos</span>
+      <span class="section-tag" style="display:block">// Planos — SharkOptimizer</span>
       <h2 class="section-title">Escolha seu plano</h2>
       <p class="section-sub">Acesso completo a todas as otimizações. Sem pegadinhas.</p>
     </div>
@@ -1087,7 +1275,7 @@ footer {
     </div>
     <div class="testi-grid reveal">
       <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <p class="testi-text">"Ganhei mais de 40 FPS em Valorant e CS2. A latência caiu bastante e o jogo ficou muito mais estável. Melhor otimizador que já usei."</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:rgba(124,92,252,0.15);color:#A88BFF">KR</div>
@@ -1098,18 +1286,18 @@ footer {
         </div>
       </div>
       <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"O plano vitalício valeu cada centavo. Meu PC low-end agora roda jogos modernos com FPS aceitável e sem travamentos."</p>
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="testi-text">"O SharkAI mudou como uso o PC. Falo 'tocar lofi' e ele já coloca a música. Assistir animes por voz é surreal. Recomendo demais."</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:rgba(46,224,255,0.1);color:#2EE0FF">ZX</div>
           <div>
             <div class="testi-name">ZentrixDev</div>
-            <div class="testi-role">PC Gamer Low-End</div>
+            <div class="testi-role">SharkAI User</div>
           </div>
         </div>
       </div>
       <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
         <p class="testi-text">"Reduzi o ping em 25ms e o 1% lows melhorou muito. O suporte respondeu rápido e o painel é super intuitivo."</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:rgba(46,255,165,0.1);color:#2EFFA5">NH</div>
@@ -1132,16 +1320,28 @@ footer {
     </div>
     <div class="faq-wrap reveal">
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">Como funciona a ativação? <span class="faq-icon">+</span></div>
+        <div class="faq-q">O que é a SharkLabs TEAM? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">A SharkLabs é uma equipe de desenvolvimento de software focada em performance e produtividade para PC. Desenvolvemos o SharkOptimizer (otimização de jogos) e o SharkAI (assistente de voz inteligente).</div></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Como funciona a ativação do SharkOptimizer? <span class="faq-icon">+</span></div>
         <div class="faq-a"><div class="faq-a-inner">Após a compra, você recebe acesso imediato ao painel. Basta baixar o programa e aplicar as otimizações desejadas. O processo é simples e guiado.</div></div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">O plano vitalício inclui atualizações? <span class="faq-icon">+</span></div>
-        <div class="faq-a"><div class="faq-a-inner">Sim! Acesso eterno a todas as otimizações atuais e futuras sem custo adicional. Atualizações contínuas são garantidas.</div></div>
+        <div class="faq-q">O SharkAI é gratuito? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">O SharkAI está incluso em todos os planos da SharkLabs. Ao assinar qualquer plano, você tem acesso ao SharkOptimizer e ao SharkAI.</div></div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">É seguro usar o SharkOptimizer? <span class="faq-icon">+</span></div>
-        <div class="faq-a"><div class="faq-a-inner">Todas as otimizações são reversíveis (exceto quando indicado). Recomendamos criar um ponto de restauração antes de aplicar. O uso é de total responsabilidade do usuário.</div></div>
+        <div class="faq-q">O SharkAI funciona offline? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">O SharkAI depende de serviços de terceiros (YouTube, SoundCloud, reconhecimento de voz) e precisa de conexão com a internet para funcionar corretamente.</div></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">O plano vitalício inclui atualizações? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Sim! Acesso eterno a todas as otimizações e recursos atuais e futuros sem custo adicional. Atualizações contínuas são garantidas.</div></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">É seguro usar os produtos? <span class="faq-icon">+</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Todas as otimizações do SharkOptimizer são reversíveis (exceto quando indicado). Recomendamos criar um ponto de restauração antes de aplicar. O uso é de total responsabilidade do usuário.</div></div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-q">Quais formas de pagamento? <span class="faq-icon">+</span></div>
@@ -1171,32 +1371,32 @@ footer {
 <footer>
   <div class="footer-logo">
     <img src="https://github.com/TheVoidSharkLabs/thevoidsharklabs.github.io/blob/main/Slogo.png?raw=true" alt="logo">
-    SharkOptimizer
+    SharkLabs TEAM
   </div>
   <div class="footer-links">
     <a href="https://sharklabs.shop/">Termos de Uso</a>
     <a href="https://discord.gg/gBGjd7ry2w">Suporte</a>
     <a href="https://discord.gg/gBGjd7ry2w">Discord</a>
   </div>
-  <div class="footer-copy">© 2026 SharkOptimizer. Todos os direitos reservados.</div>
+  <div class="footer-copy">&copy; 2026 SharkLabs TEAM. Todos os direitos reservados.</div>
 </footer>
 
 <!-- SCRIPTS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script>
-// ─── NAV SCROLL ───
+// NAV SCROLL
 const nav = document.getElementById('mainNav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// ─── MOBILE MENU ───
+// MOBILE MENU
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
 hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
 document.querySelectorAll('.nav-center a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-// ─── SCROLL REVEAL ───
+// SCROLL REVEAL
 const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1211,7 +1411,7 @@ const revealObs = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-// ─── COUNTER ANIMATION ───
+// COUNTER ANIMATION
 function animateCounter(el) {
   const target = parseFloat(el.dataset.count);
   const decimal = target % 1 !== 0;
@@ -1230,20 +1430,20 @@ function animateCounter(el) {
 }
 setTimeout(() => document.querySelectorAll('.hero [data-count]').forEach(animateCounter), 600);
 
-// ─── FAQ ───
+// FAQ
 function toggleFaq(item) {
   const open = item.classList.contains('open');
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!open) item.classList.add('open');
 }
 
-// ─── PLAN SELECT ───
+// PLAN SELECT
 function selectPlan(card) {
   document.querySelectorAll('.plan').forEach(p => p.style.boxShadow = '');
   card.style.boxShadow = '0 0 0 2px var(--purple), 0 0 40px rgba(124,92,252,0.3)';
 }
 
-// ─── FPS CHART ───
+// FPS CHART
 const ctx = document.getElementById('growthChart').getContext('2d');
 const wrap = document.getElementById('mainChartWrap');
 
@@ -1284,7 +1484,6 @@ let time = 0;
 let tickInterval = null;
 let phaseTimer1 = null;
 let phaseTimer2 = null;
-let chartStarted = false;
 
 const fpsNumEl = document.getElementById('fpsNum');
 const fpsLabelEl = document.getElementById('fpsLabel');
@@ -1304,20 +1503,16 @@ function tick() {
 }
 
 function resetChart() {
-  // Clear all running timers and interval
   clearInterval(tickInterval);
   clearTimeout(phaseTimer1);
   clearTimeout(phaseTimer2);
   tickInterval = null;
-
-  // Reset state
   phase = 0;
   time = 0;
   chart.data.datasets[0].data = Array(60).fill(52);
   chart.data.datasets[0].borderColor = '#FF4D6D';
   chart.data.datasets[0].fill = { target: 'origin', above: 'rgba(255,77,109,0.05)' };
   chart.update('none');
-
   fpsNumEl.style.opacity = '1';
   fpsNumEl.style.color = '#FF4D6D';
   fpsNumEl.textContent = '52';
@@ -1329,7 +1524,6 @@ function resetChart() {
 function startChart() {
   resetChart();
   tickInterval = setInterval(tick, 60);
-
   phaseTimer1 = setTimeout(() => {
     fpsLabelEl.style.opacity = '0';
     fpsNumEl.style.opacity = '0';
@@ -1353,21 +1547,16 @@ function stopChart() {
   tickInterval = null;
 }
 
-// Watch visibility of the chart box
 const chartBox = document.querySelector('.chart-box');
 const chartObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (e.isIntersecting) {
-      startChart();
-    } else {
-      stopChart();
-    }
+    if (e.isIntersecting) startChart();
+    else stopChart();
   });
 }, { threshold: 0.3 });
-
 chartObs.observe(chartBox);
 
-// ─── NOTIFICATIONS ───
+// NOTIFICATIONS
 const buyers = [
   { name: "Lucas M***", plan: "Vitalício", city: "São Paulo", ago: "28 seg" },
   { name: "Beatriz S***", plan: "3 Meses", city: "Rio de Janeiro", ago: "1 min" },
@@ -1391,7 +1580,7 @@ function showNotif() {
     <div style="line-height:1.45">
       <strong style="color:#EEF0FF">${b.name}</strong> comprou<br>
       <span style="color:#A88BFF;font-weight:600">${b.plan}</span><br>
-      <span style="color:#4F5878;font-size:12px;font-family:'JetBrains Mono',monospace">${b.ago} · ${b.city}</span>
+      <span style="color:#4F5878;font-size:12px;font-family:'JetBrains Mono',monospace">${b.ago} &middot; ${b.city}</span>
     </div>`;
   document.body.appendChild(el);
   requestAnimationFrame(() => {
@@ -1408,7 +1597,7 @@ setTimeout(() => {
   setInterval(() => { if (Math.random() > 0.15) showNotif(); }, 5000);
 }, 1800);
 
-// ─── SECURITY ───
+// SECURITY
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', e => {
   if (e.key === 'F12' ||
