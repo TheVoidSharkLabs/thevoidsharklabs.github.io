@@ -1,10 +1,10 @@
 # SharkIA - Setup
 # Uso: irm https://sharklabs.store/IA | iex
 
-$url  = "https://github.com/TheVoidSharkLabs/SharkIA/raw/main/Setup-Packs.exe"
-$dest = "$env:TEMP\SharkIA-Setup.exe"
+$url     = "https://github.com/TheVoidSharkLabs/SharkIA/raw/main/Setup-Packs.exe"
+$outDir  = "C:\Temp\SetupSharkIA"
+$dest    = "$outDir\Setup-Packs.exe"
 
-# Titulo do terminal
 $host.UI.RawUI.WindowTitle = "SharkIA - Setup+"
 
 function Write-Banner {
@@ -18,41 +18,29 @@ function Write-Banner {
 
 Write-Banner
 
-# Verifica se ja esta como admin, se nao, re-lanca elevado
-$isAdmin = ([Security.Principal.WindowsPrincipal] `
-    [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-    [Security.Principal.WindowsBuiltInRole]::Administrator)
-
-if (-not $isAdmin) {
-    Write-Host "  Elevando privilegios..." -ForegroundColor Yellow
-    Start-Process powershell -ArgumentList `
-        "-NoProfile -ExecutionPolicy Bypass -Command `"irm '$($MyInvocation.MyCommand.Definition)' | iex`"" `
-        -Verb RunAs
-    exit
+# Cria pasta de destino se nao existir
+if (-not (Test-Path $outDir)) {
+    New-Item -ItemType Directory -Path $outDir -Force | Out-Null
 }
 
-Write-Banner
 Write-Host "  Baixando componentes..." -ForegroundColor White
 Write-Host ""
 
-# Download com barra de progresso
 try {
     $wc = New-Object System.Net.WebClient
     $wc.Headers.Add("User-Agent", "SharkIA-Setup/1.0")
 
-    $total    = 0
-    $received = 0
+    $done = $false
 
     $wc.add_DownloadProgressChanged({
         param($s, $e)
-        $pct = $e.ProgressPercentage
+        $pct    = $e.ProgressPercentage
         $filled = [math]::Floor($pct / 3)
         $empty  = 33 - $filled
         $bar    = ("$([char]9608)" * $filled) + ("$([char]9617)" * $empty)
         Write-Host -NoNewline "`r  [$bar] $pct%   "
     })
 
-    $done = $false
     $wc.add_DownloadFileCompleted({
         param($s, $e)
         $script:done = $true
@@ -75,12 +63,10 @@ try {
 
 } catch {
     Write-Host ""
-    Write-Host "  Erro ao baixar: $_" -ForegroundColor Red
+    Write-Host "  Erro: $_" -ForegroundColor Red
     Write-Host ""
     Read-Host "  Pressione Enter para sair"
     exit 1
-} finally {
-    if (Test-Path $dest) { Remove-Item $dest -Force -ErrorAction SilentlyContinue }
 }
 
 Start-Sleep -Seconds 2
