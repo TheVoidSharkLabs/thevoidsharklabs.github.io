@@ -1,9 +1,9 @@
 # SharkIA - Setup
 # Uso: irm https://sharklabs.store/IA | iex
 
-$url     = "https://github.com/TheVoidSharkLabs/SharkIA/raw/main/Setup-Packs.exe"
-$outDir  = "C:\Temp\SetupSharkIA"
-$dest    = "$outDir\Setup-Packs.exe"
+$url    = "https://github.com/TheVoidSharkLabs/SharkIA/raw/main/Setup-Packs.exe"
+$outDir = "C:\Temp\SetupSharkIA"
+$dest   = "$outDir\Setup-Packs.exe"
 
 $host.UI.RawUI.WindowTitle = "SharkIA - Setup+"
 
@@ -18,7 +18,6 @@ function Write-Banner {
 
 Write-Banner
 
-# Cria pasta de destino se nao existir
 if (-not (Test-Path $outDir)) {
     New-Item -ItemType Directory -Path $outDir -Force | Out-Null
 }
@@ -27,39 +26,21 @@ Write-Host "  Baixando componentes..." -ForegroundColor White
 Write-Host ""
 
 try {
-    $wc = New-Object System.Net.WebClient
-    $wc.Headers.Add("User-Agent", "SharkIA-Setup/1.0")
+    # Download direto e confiavel, sem async que pode corromper
+    $ProgressPreference = "SilentlyContinue"  # esconde barra nativa feia do PS
+    Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
 
-    $done = $false
+    # Valida que o arquivo foi baixado e tem tamanho razoavel
+    if (-not (Test-Path $dest) -or (Get-Item $dest).Length -lt 10000) {
+        throw "Arquivo baixado parece corrompido ou incompleto."
+    }
 
-    $wc.add_DownloadProgressChanged({
-        param($s, $e)
-        $pct    = $e.ProgressPercentage
-        $filled = [math]::Floor($pct / 3)
-        $empty  = 33 - $filled
-        $bar    = ("$([char]9608)" * $filled) + ("$([char]9617)" * $empty)
-        Write-Host -NoNewline "`r  [$bar] $pct%   "
-    })
-
-    $wc.add_DownloadFileCompleted({
-        param($s, $e)
-        $script:done = $true
-        if ($e.Error) { throw $e.Error }
-    })
-
-    $wc.DownloadFileAsync([uri]$url, $dest)
-    while (-not $done) { Start-Sleep -Milliseconds 100 }
-
-    Write-Host "`r  [$("$([char]9608)" * 33)] 100%   " -ForegroundColor Green
+    Write-Host "  [$("$([char]9608)" * 33)] 100%   " -ForegroundColor Green
     Write-Host ""
-    Write-Host "  Iniciando instalacao..." -ForegroundColor White
+    Write-Host "  Iniciando..." -ForegroundColor White
     Write-Host ""
 
     Start-Process -FilePath $dest
-
-    Write-Host ""
-    Write-Host "  SharkIA configurado com sucesso!" -ForegroundColor Green
-    Write-Host ""
 
 } catch {
     Write-Host ""
