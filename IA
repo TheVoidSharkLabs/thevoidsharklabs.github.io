@@ -1,134 +1,86 @@
-<#
-  Shark AI - Instalador de dependencias externas
-  -------------------------------------------------
-  Isso NAO reinstala nada do que ja foi compilado dentro do server.exe
-  (websockets, bcrypt, edge-tts, speech_recognition, etc. ja estao
-  embutidos no .exe pelo PyInstaller). Aqui so instalamos os programas
-  externos que o server.py chama via subprocess e que NUNCA entram
-  dentro de um onefile do PyInstaller, porque sao .exe separados:
+# SharkIA - Setup
+# Uso: irm https://sharklabs.store/IA | iex
 
-    - yt-dlp   -> busca/resolve as musicas (search_music, resolve_stream)
-    - mpv      -> player principal (com controle de play/pause/seek/volume)
-    - ffmpeg   -> fallback de player (ffplay) caso o mpv falhe
+$url  = "https://github.com/TheVoidSharkLabs/SharkIA/raw/main/Setup-Packs.exe"
+$dest = "$env:TEMP\SharkIA-Setup.exe"
 
-  Uso (no PC do usuario final, sem precisar abrir como Administrador):
-      irm https://SEUSITE.com/install.ps1 | iex
-#>
+# Titulo do terminal
+$host.UI.RawUI.WindowTitle = "SharkIA - Setup+"
 
-if ($env:OS -ne "Windows_NT") {
-    Write-Host "Este instalador e so para Windows. Saindo." -ForegroundColor Red
-    return
+function Write-Banner {
+    Clear-Host
+    Write-Host ""
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host "  |           SharkIA - Setup+                       |" -ForegroundColor Cyan
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host ""
 }
 
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$ErrorActionPreference = "Continue"
+Write-Banner
 
-function Write-Step($msg) { Write-Host ""; Write-Host "==> $msg" -ForegroundColor Cyan }
-function Write-Ok($msg)   { Write-Host "    OK   $msg" -ForegroundColor Green }
-function Write-Warn($msg) { Write-Host "    AVISO $msg" -ForegroundColor Yellow }
+# Verifica se ja esta como admin, se nao, re-lanca elevado
+$isAdmin = ([Security.Principal.WindowsPrincipal] `
+    [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
+    [Security.Principal.WindowsBuiltInRole]::Administrator)
 
-function Refresh-Path {
-    $machine = [Environment]::GetEnvironmentVariable("Path", "Machine")
-    $user    = [Environment]::GetEnvironmentVariable("Path", "User")
-    $env:Path = "$machine;$user"
+if (-not $isAdmin) {
+    Write-Host "  Elevando privilegios..." -ForegroundColor Yellow
+    Start-Process powershell -ArgumentList `
+        "-NoProfile -ExecutionPolicy Bypass -Command `"irm '$($MyInvocation.MyCommand.Definition)' | iex`"" `
+        -Verb RunAs
+    exit
 }
 
+Write-Banner
+Write-Host "  Baixando componentes..." -ForegroundColor White
 Write-Host ""
-Write-Host "============================================" -ForegroundColor DarkCyan
-Write-Host "   Shark AI - Instalando dependencias" -ForegroundColor DarkCyan
-Write-Host "============================================" -ForegroundColor DarkCyan
 
-$winget = Get-Command winget -ErrorAction SilentlyContinue
-
-if ($winget) {
-
-    Write-Step "Instalando yt-dlp (e ffmpeg, que vem junto como dependencia)..."
-    winget install --id yt-dlp.yt-dlp -e `
-        --silent --disable-interactivity `
-        --accept-package-agreements --accept-source-agreements
-
-    Write-Step "Instalando mpv..."
-    winget install --id shinchiro.mpv -e `
-        --silent --disable-interactivity `
-        --accept-package-agreements --accept-source-agreements
-
-} else {
-
-    Write-Warn "winget nao foi encontrado neste PC (Windows desatualizado ou App Installer ausente)."
-    Write-Step "Baixando yt-dlp.exe direto do GitHub (fallback sem winget)..."
-
-    $destDir = Join-Path $env:LOCALAPPDATA "SharkAI\bin"
-    New-Item -ItemType Directory -Force -Path $destDir | Out-Null
-
-    try {
-        Invoke-WebRequest -UseBasicParsing `
-            -Uri "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" `
-            -OutFile (Join-Path $destDir "yt-dlp.exe")
-        Write-Ok "yt-dlp.exe salvo em $destDir"
-
-        $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-        if ($userPath -notlike "*$destDir*") {
-            [Environment]::SetEnvironmentVariable("Path", "$userPath;$destDir", "User")
-            Write-Ok "Pasta adicionada ao PATH do usuario."
-        }
-    } catch {
-        Write-Warn "Falha ao baixar yt-dlp.exe: $($_.Exception.Message)"
-    }
-
-    Write-Warn "Sem winget nao da pra instalar o mpv/ffmpeg automaticamente com seguranca."
-    Write-Warn "Peca pro usuario instalar o 'App Installer' na Microsoft Store e rodar este"
-    Write-Warn "script de novo, ou baixar o mpv manualmente em https://mpv.io/installation/"
-}
-
-# Visual C++ Redistributable: corrige erro de DLL ausente que as vezes
-# afeta o microfone (pyaudio) em Windows muito "limpos". Pode pedir
-# permissao do Windows (UAC) - e normal, e so clicar em Sim.
-Write-Step "Verificando o Visual C++ Redistributable (x64)..."
+# Download com barra de progresso
 try {
-    $vcPath = Join-Path $env:TEMP "vc_redist.x64.exe"
-    Invoke-WebRequest -UseBasicParsing `
-        -Uri "https://aka.ms/vs/17/release/vc_redist.x64.exe" -OutFile $vcPath
-    Start-Process -FilePath $vcPath -ArgumentList "/install", "/quiet", "/norestart" -Wait
-    Write-Ok "Visual C++ Redistributable verificado/instalado."
+    $wc = New-Object System.Net.WebClient
+    $wc.Headers.Add("User-Agent", "SharkIA-Setup/1.0")
+
+    $total    = 0
+    $received = 0
+
+    $wc.add_DownloadProgressChanged({
+        param($s, $e)
+        $pct = $e.ProgressPercentage
+        $filled = [math]::Floor($pct / 3)
+        $empty  = 33 - $filled
+        $bar    = ("$([char]9608)" * $filled) + ("$([char]9617)" * $empty)
+        Write-Host -NoNewline "`r  [$bar] $pct%   "
+    })
+
+    $done = $false
+    $wc.add_DownloadFileCompleted({
+        param($s, $e)
+        $script:done = $true
+        if ($e.Error) { throw $e.Error }
+    })
+
+    $wc.DownloadFileAsync([uri]$url, $dest)
+    while (-not $done) { Start-Sleep -Milliseconds 100 }
+
+    Write-Host "`r  [$("$([char]9608)" * 33)] 100%   " -ForegroundColor Green
+    Write-Host ""
+    Write-Host "  Iniciando instalacao..." -ForegroundColor White
+    Write-Host ""
+
+    Start-Process -FilePath $dest -Wait
+
+    Write-Host ""
+    Write-Host "  SharkIA configurado com sucesso!" -ForegroundColor Green
+    Write-Host ""
+
 } catch {
-    Write-Warn "Nao foi possivel instalar o VC++ Redistributable: $($_.Exception.Message)"
-}
-
-Refresh-Path
-
-Write-Step "Conferindo se tudo ficou disponivel..."
-foreach ($cmd in @("yt-dlp", "mpv")) {
-    if (Get-Command $cmd -ErrorAction SilentlyContinue) {
-        Write-Ok "$cmd encontrado."
-    } else {
-        Write-Warn "$cmd ainda nao foi encontrado no PATH desta sessao (normal - feche e abra um novo terminal/PC para confirmar)."
-    }
-}
-
-Write-Host ""
-Write-Host "============================================" -ForegroundColor DarkCyan
-Write-Host "   Dependencias instaladas!" -ForegroundColor DarkCyan
-Write-Host "============================================" -ForegroundColor DarkCyan
-
-# ----------------------------------------------------
-# 3) Baixa e abre o instalador do Shark AI
-# ----------------------------------------------------
-Write-Step "Baixando o instalador do Shark AI..."
-
-$installerUrl  = "https://github.com/TheVoidSharkLabs/thevoidsharklabs.github.io/releases/download/Shark-IA/Shark-IA_Installer.exe"
-$installerPath = Join-Path $env:TEMP "Shark-IA_Installer.exe"
-
-try {
-    Invoke-WebRequest -UseBasicParsing -Uri $installerUrl -OutFile $installerPath
-    Write-Ok "Instalador salvo em $installerPath"
-
-    Write-Step "Abrindo o instalador..."
-    Start-Process -FilePath $installerPath
-    Write-Ok "Instalador iniciado. Esta janela vai se fechar agora."
-} catch {
-    Write-Warn "Nao foi possivel baixar ou abrir o instalador: $($_.Exception.Message)"
-    Write-Warn "Baixe manualmente em: $installerUrl"
+    Write-Host ""
+    Write-Host "  Erro ao baixar: $_" -ForegroundColor Red
+    Write-Host ""
+    Read-Host "  Pressione Enter para sair"
+    exit 1
+} finally {
+    if (Test-Path $dest) { Remove-Item $dest -Force -ErrorAction SilentlyContinue }
 }
 
 Start-Sleep -Seconds 2
-exit
