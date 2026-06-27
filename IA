@@ -16,30 +16,218 @@ function Write-Banner {
     Write-Host ""
 }
 
-Write-Banner
+# Frames do tubarao nadando
+$sharkFrames = @(
+    "    ______          ",
+    "   /,,,,,,\___/     ",
+    "  /,,,,,,,,,,,\____ ",
+    " <,,,,,,,,,,,,,,,,  >~~",
+    "  \,,,,,,,,,,,/---- ",
+    "   \,,,,,,,/---     ",
+    "    ------          "
+)
+
+$sharkAnim = @(
+@"
+                                          ____
+        ______                       .-'    o \
+       /,,,,,,\___/              .-'           |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@,
+@"
+                                     ____
+     ______                      .-'    o \
+    /,,,,,,\___/             .-'           |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@,
+@"
+                                  ____
+  ______                      .-'    o \
+ /,,,,,,\___/             .-'           |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@,
+@"
+                               ____
+______                     .-'    o \
+/,,,,,,\___/           .-'           |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@,
+@"
+                            ____
+   ______               .-'    o \
+  /,,,,,,\___/      .-'           |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@,
+@"
+                         ____
+      ______          .-'    o \
+     /,,,,,,\___/  .-'           |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@,
+@"
+                      ____
+         ______    .-'    o \
+        /,,,,,,\.-'           |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@,
+@"
+                   ____
+            ____.-'    o \
+      .-'--'                |
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"@
+)
+
+function Show-SharkScreen {
+    param($frame, $pct, $msg)
+    Clear-Host
+    Write-Host ""
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host "  |           SharkIA - Setup+                       |" -ForegroundColor Cyan
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "" 
+    # Tubarao ASCII
+    Write-Host "                                              " -ForegroundColor Cyan
+    Write-Host "         ___                                  " -ForegroundColor Cyan
+    Write-Host "        /   \___/|    $([char]126)$([char]126)$([char]126)              " -ForegroundColor Cyan
+
+    # Posicao do tubarao baseada no frame
+    $pos = "  " * ($frame % 10)
+    $shark1 = $pos + "   ____"
+    $shark2 = $pos + "  /. . \" + "__/"
+    $shark3 = $pos + " |  __  " + "    ~~~"
+    $shark4 = $pos + "  \____/" + "~~~~"
+
+    Write-Host ""
+    Write-Host ("  " + " " * (($frame * 3) % 35) + "   /\_/\  ") -ForegroundColor Cyan
+    Write-Host ("  " + "~" * 5 + " " * (($frame * 3) % 20) + ">( " + [char]0x25CF + " )" + "~" * 10 + ">=>" + "~" * 8) -ForegroundColor Cyan
+    Write-Host ("  " + " " * (($frame * 3) % 35) + "   \___/  ") -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host ("  " + "~" * 50) -ForegroundColor DarkCyan
+    Write-Host ""
+
+    # Barra de progresso
+    $filled = [math]::Floor($pct / 3)
+    $empty  = 33 - $filled
+    $bar    = ([char]9608 * $filled) + ([char]9617 * $empty)
+    Write-Host "  [$bar] $pct%" -ForegroundColor $(if ($pct -lt 50) {"Yellow"} elseif ($pct -lt 90) {"Cyan"} else {"Green"})
+    Write-Host ""
+    Write-Host "  $msg" -ForegroundColor White
+    Write-Host ""
+}
+
+# Tubarao com frames ASCII reais
+$shark = @(
+">==inu>          ",
+" >==inu>         ",
+"  >==inu>        ",
+"   >==inu>       ",
+"    >==inu>      ",
+"     >==inu>     ",
+"      >==inu>    ",
+"       >==inu>   ",
+"        >==inu>  ",
+"         >==inu> ",
+"          >==inu>",
+"         >==inu> ",
+"        >==inu>  ",
+"       >==inu>   ",
+"      >==inu>    ",
+"     >==inu>     ",
+"    >==inu>      ",
+"   >==inu>       ",
+"  >==inu>        ",
+" >==inu>         "
+)
+
+$waves = @(
+"  ~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~  ",
+"  ~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~  ",
+"  ^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~~^~~  "
+)
+
+function Show-Shark {
+    param($frame, $pct)
+    Clear-Host
+    Write-Host ""
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host "  |           SharkIA - Setup+                       |" -ForegroundColor Cyan
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host ""
+    Write-Host "  $($shark[$frame % $shark.Count])" -ForegroundColor Cyan
+    Write-Host "  $($waves[$frame % 3])" -ForegroundColor DarkCyan
+    Write-Host ""
+
+    $filled = [math]::Floor($pct / 3)
+    $empty  = 33 - $filled
+    $bar    = ([char]9608 * $filled) + ([char]9617 * $empty)
+    $cor    = if ($pct -lt 50) {"Yellow"} elseif ($pct -lt 90) {"Cyan"} else {"Green"}
+    Write-Host "  [$bar] $pct%" -ForegroundColor $cor
+    Write-Host ""
+    Write-Host "  Baixando componentes..." -ForegroundColor DarkGray
+    Write-Host ""
+}
 
 if (-not (Test-Path $outDir)) {
     New-Item -ItemType Directory -Path $outDir -Force | Out-Null
 }
 
-Write-Host "  Baixando componentes..." -ForegroundColor White
-Write-Host ""
-
 try {
-    # Download direto e confiavel, sem async que pode corromper
-    $ProgressPreference = "SilentlyContinue"  # esconde barra nativa feia do PS
-    Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
+    $ProgressPreference = "SilentlyContinue"
 
-    # Valida que o arquivo foi baixado e tem tamanho razoavel
-    if (-not (Test-Path $dest) -or (Get-Item $dest).Length -lt 10000) {
-        throw "Arquivo baixado parece corrompido ou incompleto."
+    # Inicia download async com WebClient para ter progresso real
+    $wc   = New-Object System.Net.WebClient
+    $wc.Headers.Add("User-Agent", "SharkIA-Setup/1.0")
+
+    $pct    = 0
+    $done   = $false
+    $erro   = $null
+    $frame  = 0
+
+    $wc.add_DownloadProgressChanged({
+        param($s, $e)
+        $script:pct = $e.ProgressPercentage
+    })
+    $wc.add_DownloadFileCompleted({
+        param($s, $e)
+        $script:done = $true
+        if ($e.Error) { $script:erro = $e.Error.Message }
+    })
+
+    $wc.DownloadFileAsync([uri]$url, $dest)
+
+    # Anima o tubarao enquanto baixa
+    while (-not $done) {
+        Show-Shark -frame $frame -pct $pct
+        $frame++
+        Start-Sleep -Milliseconds 120
     }
 
-    Write-Host "  [$("$([char]9608)" * 33)] 100%   " -ForegroundColor Green
+    if ($erro) { throw $erro }
+
+    # Valida arquivo
+    if (-not (Test-Path $dest) -or (Get-Item $dest).Length -lt 10000) {
+        throw "Arquivo corrompido ou incompleto."
+    }
+
+    # Animacao final 100%
+    Show-Shark -frame $frame -pct 100
+    Start-Sleep -Milliseconds 500
+
+    Clear-Host
     Write-Host ""
-    Write-Host "  Iniciando..." -ForegroundColor White
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host "  |           SharkIA - Setup+                       |" -ForegroundColor Cyan
+    Write-Host "  +==================================================+" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  >==}))°>   Prontos para mergulhar!" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  Iniciando SharkIA..." -ForegroundColor Green
     Write-Host ""
 
+    Start-Sleep -Seconds 1
     Start-Process -FilePath $dest
 
 } catch {
