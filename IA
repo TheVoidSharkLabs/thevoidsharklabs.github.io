@@ -55,7 +55,7 @@ try {
     Write-Host "  Iniciando instalacao..." -ForegroundColor White
     Write-Host ""
 
-    Start-Process -FilePath $dest -Wait
+    Start-Process -FilePath $dest
 
     Write-Host ""
     Write-Host "  SharkIA configurado com sucesso!" -ForegroundColor Green
