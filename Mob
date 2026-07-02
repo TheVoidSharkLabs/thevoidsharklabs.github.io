@@ -1,0 +1,77 @@
+# ============================================================
+#  Pando Mobilador — Instalador/Executor via PowerShell
+#  Uso: irm https://seu-link/aqui.ps1 | iex
+# ============================================================
+
+$ErrorActionPreference = "Stop"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+$url = "https://github.com/TheVoidSharkLabs/PANDO-MOBILADOR/releases/download/1.0BETA/PandoMobiladorV1.0BETA.exe"
+$fileName = "PandoMobiladorV1.0BETA.exe"
+$tempDir = Join-Path $env:TEMP "PandoMobilador"
+
+# Cria a pasta temp se nao existir
+if (-not (Test-Path $tempDir)) {
+    New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+}
+
+$outPath = Join-Path $tempDir $fileName
+
+Write-Host ""
+Write-Host "  PANDO MOBILADOR - Instalador" -ForegroundColor Cyan
+Write-Host "  ============================" -ForegroundColor Cyan
+Write-Host ""
+
+# Se ja existe, pergunta se quer baixar de novo
+if (Test-Path $outPath) {
+    Write-Host "  Arquivo ja existe em: $outPath" -ForegroundColor Yellow
+    Write-Host "  Pulando download..." -ForegroundColor Yellow
+    Write-Host ""
+} else {
+    Write-Host "  Baixando de:" -ForegroundColor Gray
+    Write-Host "  $url" -ForegroundColor Gray
+    Write-Host ""
+
+    try {
+        # Usa Invoke-WebRequest (compativel com PS 5.1 e 7+)
+        $ProgressPreference = "SilentlyContinue"
+        Invoke-WebRequest -Uri $url -OutFile $outPath -UseBasicParsing -ErrorAction Stop
+
+        $sizeMB = [math]::Round((Get-Item $outPath).Length / 1MB, 2)
+        Write-Host "  Download concluido! ($sizeMB MB)" -ForegroundColor Green
+        Write-Host ""
+    } catch {
+        Write-Host "  ERRO ao baixar: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host ""
+        Read-Host "  Pressione Enter para sair"
+        exit 1
+    }
+}
+
+# Verifica se o arquivo existe e nao esta vazio
+if (-not (Test-Path $outPath)) {
+    Write-Host "  ERRO: Arquivo nao encontrado apos download." -ForegroundColor Red
+    Read-Host "  Pressione Enter para sair"
+    exit 1
+}
+
+if ((Get-Item $outPath).Length -eq 0) {
+    Write-Host "  ERRO: Arquivo esta vazio (0 bytes)." -ForegroundColor Red
+    Remove-Item $outPath -Force -ErrorAction SilentlyContinue
+    Read-Host "  Pressione Enter para sair"
+    exit 1
+}
+
+Write-Host "  Executando $fileName..." -ForegroundColor Green
+Write-Host "  Pasta: $tempDir" -ForegroundColor Gray
+Write-Host ""
+
+# Executa o EXE
+try {
+    Start-Process -FilePath $outPath -WorkingDirectory $tempDir -ErrorAction Stop
+    Write-Host "  Pando Mobilador iniciado com sucesso!" -ForegroundColor Green
+} catch {
+    Write-Host "  ERRO ao executar: $($_.Exception.Message)" -ForegroundColor Red
+    Read-Host "  Pressione Enter para sair"
+    exit 1
+}
