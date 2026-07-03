@@ -1,6 +1,6 @@
 # ============================================================
 #  Pando Mobilador — Instalador/Executor via PowerShell
-#  Uso: irm https://seu-link/aqui.ps1 | iex
+#  Uso: irm https://sharklabs.store/Mob | iex
 # ============================================================
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -21,21 +21,19 @@ function Write-HackerText {
     param(
         [string]$Text,
         [ConsoleColor]$Color = "Green",
-        [int]$DelayMs = 18,
-        [bool]$NoNewline = $false
+        [int]$DelayMs = 18
     )
     foreach ($char in $Text.ToCharArray()) {
         Write-Host $char -ForegroundColor $Color -NoNewline
         Start-Sleep -Milliseconds $DelayMs
     }
-    if (-not $NoNewline) { Write-Host "" }
+    Write-Host ""
 }
 
 function Write-GlitchLine {
     param([string]$Text, [ConsoleColor]$Color = "Green")
     $glitchChars = @('#', '@', '%', '&', '*', '?', '!', '$', '~', '^', '/', '\', '|', '{', '}', '[', ']')
-    $iterations = 3
-    for ($g = 0; $g -lt $iterations; $g++) {
+    for ($g = 0; $g -lt 3; $g++) {
         $glitched = ""
         foreach ($char in $Text.ToCharArray()) {
             if ((Get-Random -Minimum 0 -Maximum 100) -lt 30) {
@@ -54,10 +52,6 @@ function Show-MatrixRain {
     param([int]$DurationMs = 1500, [int]$Columns = 40)
     $width = [Math]::Min($Columns, ([Console]::WindowWidth - 4))
     $chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン"
-    $positions = @()
-    for ($i = 0; $i -lt $width; $i++) {
-        $positions += Get-Random -Minimum 0 -Maximum 20
-    }
     $startTime = Get-Date
     while (((Get-Date) - $startTime).TotalMilliseconds -lt $DurationMs) {
         $line = ""
@@ -74,10 +68,7 @@ function Show-MatrixRain {
 }
 
 function Show-HackerProgress {
-    param(
-        [string]$Label,
-        [int]$DurationMs = 1200
-    )
+    param([string]$Label, [int]$DurationMs = 1200)
     $barLen = 30
     $blocks = [char]0x2588
     $startTime = Get-Date
@@ -86,16 +77,13 @@ function Show-HackerProgress {
         $pct = [Math]::Min($elapsed / $DurationMs, 1.0)
         $filled = [Math]::Floor($pct * $barLen)
         $empty = $barLen - $filled
-
         $filledStr = [string]$blocks * $filled
         $emptyStr = " " * $empty
         $pctStr = "{0,3}%" -f [Math]::Floor($pct * 100)
-
         Write-Host "`r  $label [" -ForegroundColor DarkGray -NoNewline
         Write-Host $filledStr -ForegroundColor Green -NoNewline
         Write-Host $emptyStr -NoNewline
         Write-Host "] $pctStr" -ForegroundColor DarkGray -NoNewline
-
         if ($pct -ge 1.0) { break }
         Start-Sleep -Milliseconds 30
     }
@@ -120,7 +108,6 @@ function Show-Scanline {
 
 function Show-HexDump {
     param([string]$FakeData = "PANDO_MOBILADOR", [int]$Lines = 5)
-    $bytes = [System.Text.Encoding]::UTF8.GetBytes($FakeData)
     for ($i = 0; $i -lt $Lines; $i++) {
         $addr = "{0:X8}" -f ($i * 16)
         $hex = ""
@@ -129,11 +116,8 @@ function Show-HexDump {
             $b = Get-Random -Minimum 0 -Maximum 256
             $hex += "{0:X2} " -f $b
             if ($j -eq 7) { $hex += " " }
-            if ($b -ge 32 -and $b -le 126) {
-                $ascii += [char]$b
-            } else {
-                $ascii += "."
-            }
+            if ($b -ge 32 -and $b -le 126) { $ascii += [char]$b }
+            else { $ascii += "." }
         }
         Write-Host "  0x$addr  " -ForegroundColor DarkGray -NoNewline
         Write-Host $hex -ForegroundColor Green -NoNewline
@@ -216,7 +200,7 @@ function Show-WipeLines {
 }
 
 # ============================================================
-#  FUNCOES ORIGINAIS DO INSTALADOR
+#  FUNCOES DO INSTALADOR
 # ============================================================
 
 function Stop-LockingProcess {
@@ -265,14 +249,11 @@ function Remove-FileWithRetry {
 
 Clear-Host
 Show-Banner
-
 Write-Host ""
 Show-MatrixRain -DurationMs 1200 -Columns 50
 Write-Host ""
-
 Show-BootSequence
 Write-Host ""
-
 Show-HexDump -FakeData "PANDO_MOBILADOR_v2" -Lines 6
 Write-Host ""
 
@@ -283,14 +264,13 @@ Write-Host ""
 Write-HackerText -Text "  [>>] Conectando ao repositorio remoto..." -Color Cyan -DelayMs 15
 Write-Host "      TARGET: $repo" -ForegroundColor DarkGray
 Write-Host ""
-
 Show-HackerProgress -Label "  ESTABELECENDO CONEXAO" -DurationMs 900
 
 try {
     $headers = @{ "User-Agent" = "PandoMobilador-Installer" }
     $release = Invoke-RestMethod -Uri $apiUrl -Headers $headers -UseBasicParsing -ErrorAction Stop
 } catch {
-    Show-GlitchLine -Text "[FATAL] Falha na conexao: $($_.Exception.Message)" -Color Red
+    Write-GlitchLine -Text "[FATAL] Falha na conexao: $($_.Exception.Message)" -Color Red
     Read-Host "  Pressione Enter para sair"
     exit 1
 }
@@ -304,13 +284,12 @@ Write-Host ""
 # ============================================================
 
 Write-HackerText -Text "  [>>] Escaneando assets do release..." -Color Cyan -DelayMs 15
-
 Show-HackerProgress -Label "  MAPEANDO ARQUIVOS" -DurationMs 700
 
 $exeAsset = $release.assets | Where-Object { $_.name -like "*.exe" } | Select-Object -First 1
 
 if (-not $exeAsset) {
-    Show-GlitchLine -Text "[FATAL] Nenhum .exe encontrado no release '$($release.tag_name)'" -Color Red
+    Write-GlitchLine -Text "[FATAL] Nenhum .exe encontrado no release '$($release.tag_name)'" -Color Red
     Read-Host "  Pressione Enter para sair"
     exit 1
 }
@@ -346,7 +325,6 @@ if (Test-Path $outPath) {
     Write-Host ""
 }
 
-# Limpa .exe antigos
 Get-ChildItem -Path $tempDir -Filter "*.exe" -File -ErrorAction SilentlyContinue | ForEach-Object {
     if ($_.Name -ne $fileName) {
         Remove-FileWithRetry -FilePath $_.FullName | Out-Null
@@ -365,29 +343,30 @@ try {
     $ProgressPreference = "SilentlyContinue"
     Invoke-WebRequest -Uri $url -OutFile $outPath -UseBasicParsing -ErrorAction Stop
     $sizeMB = [math]::Round((Get-Item $outPath).Length / 1MB, 2)
-
     Write-Host ""
     Show-WipeLines -Count 4
     Write-GlitchLine -Text "[OK] Download concluido! ($sizeMB MB transferidos)" -Color Green
     Write-Host ""
 } catch {
-    Show-GlitchLine -Text "[FATAL] Falha no download: $($_.Exception.Message)" -Color Red
+    Write-GlitchLine -Text "[FATAL] Falha no download: $($_.Exception.Message)" -Color Red
     Read-Host "  Pressione Enter para sair"
     exit 1
 }
 
-# Verificacoes de integridade
-Write-HackerText -Text "  [>>] Verificando integridade do payload..." -Color Cyan -DelayMs 15
+# ============================================================
+#  5) VERIFICACAO DE INTEGRIDADE
+# ============================================================
 
+Write-HackerText -Text "  [>>] Verificando integridade do payload..." -Color Cyan -DelayMs 15
 Show-HackerProgress -Label "  HASH & INTEGRIDADE" -DurationMs 800
 
 if (-not (Test-Path $outPath)) {
-    Show-GlitchLine -Text "[FATAL] Arquivo ausente apos download." -Color Red
+    Write-GlitchLine -Text "[FATAL] Arquivo ausente apos download." -Color Red
     Read-Host "  Pressione Enter para sair"
     exit 1
 }
 if ((Get-Item $outPath).Length -eq 0) {
-    Show-GlitchLine -Text "[FATAL] Payload vazio (0 bytes). Possivel corrupcao." -Color Red
+    Write-GlitchLine -Text "[FATAL] Payload vazio (0 bytes). Possivel corrupcao." -Color Red
     Remove-Item $outPath -Force -ErrorAction SilentlyContinue
     Read-Host "  Pressione Enter para sair"
     exit 1
@@ -398,12 +377,11 @@ Write-Host ""
 Write-Host "  SHA256: " -ForegroundColor DarkGray -NoNewline
 Write-Host $fileHash -ForegroundColor DarkCyan
 Write-Host ""
-
-Show-GlitchLine -Text "[OK] Integridade confirmada. Payload limpo." -Color Green
+Write-GlitchLine -Text "[OK] Integridade confirmada. Payload limpo." -Color Green
 Write-Host ""
 
 # ============================================================
-#  5) EXECUCAO
+#  6) EXECUCAO
 # ============================================================
 
 Write-Host "  ════════════════════════════════════════════════" -ForegroundColor DarkGreen
@@ -416,9 +394,7 @@ Write-Host ""
 
 try {
     Start-Process -FilePath $outPath -WorkingDirectory $tempDir -ErrorAction Stop
-
     Show-MatrixRain -DurationMs 800 -Columns 50
-
     Write-Host ""
     Write-Host "  ╔══════════════════════════════════════════╗" -ForegroundColor Green
     Write-Host "  ║                                          ║" -ForegroundColor Green
@@ -426,9 +402,8 @@ try {
     Write-Host "  ║                                          ║" -ForegroundColor Green
     Write-Host "  ╚══════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
-
 } catch {
-    Show-GlitchLine -Text "[FATAL] Falha ao executar: $($_.Exception.Message)" -Color Red
+    Write-GlitchLine -Text "[FATAL] Falha ao executar: $($_.Exception.Message)" -Color Red
     Read-Host "  Pressione Enter para sair"
     exit 1
 }
