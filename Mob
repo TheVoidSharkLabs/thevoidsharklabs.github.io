@@ -2,32 +2,67 @@
 #  Pando Mobilador — Instalador/Executor via PowerShell
 #  Uso: irm https://seu-link/aqui.ps1 | iex
 # ============================================================
-
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$url = "https://github.com/TheVoidSharkLabs/PANDO-MOBILADOR/releases/download/1.0BETA/PandoMobiladorV1.0BETA.exe"
-$fileName = "PandoMobiladorV1.0BETA.exe"
-$tempDir = Join-Path $env:TEMP "PandoMobilador"
+$repo = "TheVoidSharkLabs/PANDO-MOBILADOR"
+$apiUrl = "https://api.github.com/repos/$repo/releases/latest"
 
-# Cria a pasta temp se nao existir
+$tempDir = Join-Path $env:TEMP "PandoMobilador"
 if (-not (Test-Path $tempDir)) {
     New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
 }
-
-$outPath = Join-Path $tempDir $fileName
 
 Write-Host ""
 Write-Host "  PANDO MOBILADOR - Instalador" -ForegroundColor Cyan
 Write-Host "  ============================" -ForegroundColor Cyan
 Write-Host ""
 
-# Se ja existe, apaga para baixar a versao mais nova
+# --------------------------------------------------------------
+# 1) Consulta a API do GitHub para achar o release mais recente
+# --------------------------------------------------------------
+Write-Host "  Verificando ultima versao disponivel..." -ForegroundColor Gray
+try {
+    $headers = @{ "User-Agent" = "PandoMobilador-Installer" }
+    $release = Invoke-RestMethod -Uri $apiUrl -Headers $headers -UseBasicParsing -ErrorAction Stop
+} catch {
+    Write-Host "  ERRO ao consultar releases: $($_.Exception.Message)" -ForegroundColor Red
+    Read-Host "  Pressione Enter para sair"
+    exit 1
+}
+
+# --------------------------------------------------------------
+# 2) Procura o primeiro asset que termine em .exe, independente do nome
+# --------------------------------------------------------------
+$exeAsset = $release.assets | Where-Object { $_.name -like "*.exe" } | Select-Object -First 1
+
+if (-not $exeAsset) {
+    Write-Host "  ERRO: Nenhum arquivo .exe encontrado no release '$($release.tag_name)'." -ForegroundColor Red
+    Read-Host "  Pressione Enter para sair"
+    exit 1
+}
+
+$url = $exeAsset.browser_download_url
+$fileName = $exeAsset.name
+$outPath = Join-Path $tempDir $fileName
+
+Write-Host "  Versao encontrada: $($release.tag_name)" -ForegroundColor Green
+Write-Host "  Arquivo: $fileName" -ForegroundColor Gray
+Write-Host ""
+
+# Se ja existe (de uma versao anterior), apaga para baixar a mais nova
 if (Test-Path $outPath) {
     Write-Host "  Versao antiga encontrada, removendo..." -ForegroundColor Yellow
     Remove-Item $outPath -Force
     Write-Host "  Removido com sucesso." -ForegroundColor Yellow
     Write-Host ""
+}
+
+# Limpa outros .exe antigos de versoes anteriores na pasta temp (nomes podem mudar)
+Get-ChildItem -Path $tempDir -Filter "*.exe" -File -ErrorAction SilentlyContinue | ForEach-Object {
+    if ($_.Name -ne $fileName) {
+        Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue
+    }
 }
 
 Write-Host "  Baixando de:" -ForegroundColor Gray
@@ -37,7 +72,6 @@ Write-Host ""
 try {
     $ProgressPreference = "SilentlyContinue"
     Invoke-WebRequest -Uri $url -OutFile $outPath -UseBasicParsing -ErrorAction Stop
-
     $sizeMB = [math]::Round((Get-Item $outPath).Length / 1MB, 2)
     Write-Host "  Download concluido! ($sizeMB MB)" -ForegroundColor Green
     Write-Host ""
@@ -54,7 +88,6 @@ if (-not (Test-Path $outPath)) {
     Read-Host "  Pressione Enter para sair"
     exit 1
 }
-
 if ((Get-Item $outPath).Length -eq 0) {
     Write-Host "  ERRO: Arquivo esta vazio (0 bytes)." -ForegroundColor Red
     Remove-Item $outPath -Force -ErrorAction SilentlyContinue
@@ -66,7 +99,6 @@ Write-Host "  Executando $fileName..." -ForegroundColor Green
 Write-Host "  Pasta: $tempDir" -ForegroundColor Gray
 Write-Host ""
 
-# Executa o EXE
 try {
     Start-Process -FilePath $outPath -WorkingDirectory $tempDir -ErrorAction Stop
     Write-Host "  Pando Mobilador iniciado com sucesso!" -ForegroundColor Green
