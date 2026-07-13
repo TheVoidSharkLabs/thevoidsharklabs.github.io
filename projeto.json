@@ -16,5 +16,16 @@
     "github_repo": "TheVoidSharkLabs/ADB-DEBLOAT-GUI",
     "asset_match": "x64.*\\.(exe|zip)$",
     "color": null
+  },
+  {
+    "name": "SHARK AI",
+    "description": "Assistente de voz e texto para Windows. Controle músicas, programas, sites e o próprio computador conversando em português — por microfone ou digitando.",
+    "file_name": null,
+    "image": "https://raw.githubusercontent.com/TheVoidSharkLabs/SharkIA/refs/heads/main/AI.ico",
+    "banner": null,
+    "download_url": null,
+    "github_repo": "TheVoidSharkLabs/thevoidsharklabs.github.io",
+    "asset_match": "x64.*\\.(exe|zip)$",
+    "color": null
   }
 ]
