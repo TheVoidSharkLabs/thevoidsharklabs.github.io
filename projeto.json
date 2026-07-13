@@ -5,5 +5,16 @@
     "image": "https://github.com/TheVoidSharkLabs/PANDO-MOBILADOR/blob/main/128x128@2x.png?raw=true",
     "file_name": "Pando.exe",
     "github_repo": "TheVoidSharkLabs/PANDO-MOBILADOR"
+  },
+  {
+    "name": "ADB DEBLOAT GUI",
+    "description": "Remova bloatwares, gerencie aplicativos e faça backups do seu Android — tudo de uma única interface.",
+    "file_name": null,
+    "image": "https://raw.githubusercontent.com/TheVoidSharkLabs/ADB-DEBLOAT-GUI/refs/heads/main/adb-debloat-gui_256x256_32bit.ico",
+    "banner": null,
+    "download_url": null,
+    "github_repo": "TheVoidSharkLabs/ADB-DEBLOAT-GUI",
+    "asset_match": null,
+    "color": null
   }
 ]
