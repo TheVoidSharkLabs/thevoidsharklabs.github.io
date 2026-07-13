@@ -23,7 +23,7 @@
     "file_name": null,
     "image": "https://raw.githubusercontent.com/TheVoidSharkLabs/SharkIA/refs/heads/main/AI.ico",
     "banner": null,
-    "download_url": null,
+    "download_url": "Shark-IA_Installer.exe",
     "github_repo": "TheVoidSharkLabs/thevoidsharklabs.github.io",
     "asset_match": "x64.*\\.(exe|zip)$",
     "color": null
