@@ -14,7 +14,7 @@
     "banner": null,
     "download_url": null,
     "github_repo": "TheVoidSharkLabs/ADB-DEBLOAT-GUI",
-    "asset_match": null,
+    "asset_match": "x64.*\\.(exe|zip)$",
     "color": null
   }
 ]
