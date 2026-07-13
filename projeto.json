@@ -25,7 +25,7 @@
     "banner": null,
     "download_url": null,
     "github_repo": "TheVoidSharkLabs/thevoidsharklabs.github.io",
-    "asset_match": "\\.exe$|\\.zip$",
+    "asset_match": "\\.exe$",
     "color": null
   }
 ]
