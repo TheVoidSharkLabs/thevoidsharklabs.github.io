@@ -260,6 +260,95 @@ nav.scrolled { padding: 14px 64px; }
   max-width: 480px; line-height: 1.65;
 }
 
+/* TOOLBOX TOP BAR */
+.toolbox-bar {
+  position: relative; z-index: 2;
+  margin-top: 68px;
+  background: linear-gradient(120deg, rgba(124,92,252,0.1) 0%, rgba(46,224,255,0.06) 100%);
+  border-bottom: 1px solid var(--border);
+}
+.toolbox-bar-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 18px 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.toolbox-copy {
+  display: flex; align-items: center; gap: 14px;
+  flex: 1; min-width: 260px;
+}
+.toolbox-icon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(124,92,252,0.15);
+  border: 1px solid rgba(124,92,252,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px;
+}
+.toolbox-copy h4 {
+  font-size: 15px; font-weight: 700; letter-spacing: -0.2px;
+}
+.toolbox-copy h4 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--cyan) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.toolbox-copy p {
+  font-size: 12.5px; color: var(--text2); margin-top: 2px;
+}
+.toolbox-controls {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.toolbox-select {
+  appearance: none; -webkit-appearance: none;
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238891B4' stroke-width='1.5' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E") no-repeat right 14px center;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font); font-size: 13px; font-weight: 500;
+  padding: 11px 38px 11px 16px;
+  border-radius: 9px; cursor: pointer;
+  min-width: 260px;
+  transition: border-color .2s;
+}
+.toolbox-select:hover, .toolbox-select:focus { border-color: var(--border-hover); outline: none; }
+.toolbox-select:disabled { opacity: .5; cursor: wait; }
+
+.toolbox-download-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--purple); color: #fff; border: none;
+  border-radius: 9px; padding: 11px 22px;
+  font-family: var(--font); font-weight: 600; font-size: 13.5px;
+  cursor: pointer; white-space: nowrap;
+  transition: background .2s, transform .15s, box-shadow .2s;
+}
+.toolbox-download-btn:hover {
+  background: var(--purple-dim);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(124,92,252,0.35);
+}
+.toolbox-download-btn:disabled {
+  opacity: .5; cursor: wait; transform: none; box-shadow: none;
+}
+.toolbox-download-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.toolbox-status {
+  font-family: var(--mono); font-size: 10.5px; color: var(--text3);
+  letter-spacing: .5px; white-space: nowrap;
+}
+.toolbox-status.ok { color: var(--green); }
+.toolbox-status.err { color: var(--red); }
+
+@media (max-width: 1024px) {
+  .toolbox-bar-inner { padding: 18px 32px; }
+}
+@media (max-width: 768px) {
+  .toolbox-bar { margin-top: 58px; }
+  .toolbox-bar-inner { padding: 16px 20px; flex-direction: column; align-items: stretch; }
+  .toolbox-controls { flex-direction: column; align-items: stretch; }
+  .toolbox-select { min-width: 0; width: 100%; }
+  .toolbox-download-btn { width: 100%; justify-content: center; }
+  .toolbox-copy { min-width: 0; }
+}
+
 /* PRODUCTS */
 .products-section {
   position: relative; z-index: 1;
@@ -1053,6 +1142,33 @@ footer {
   <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
 </nav>
 
+<!-- TOOLBOX TOP BAR -->
+<div class="toolbox-bar" id="toolbox">
+  <div class="toolbox-bar-inner">
+    <div class="toolbox-copy">
+      <div class="toolbox-icon">&#129521;</div>
+      <div>
+        <h4>SharkLabs <em>| Toolbox</em></h4>
+        <p>Baixe todos os nossos projetos por aqui.</p>
+      </div>
+    </div>
+    <div class="toolbox-controls">
+      <select class="toolbox-select" id="toolboxSelect" disabled>
+        <option>Carregando releases...</option>
+      </select>
+      <button class="toolbox-download-btn" id="toolboxDownloadBtn" disabled onclick="downloadToolboxAsset()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download
+      </button>
+      <span class="toolbox-status" id="toolboxStatus">buscando última versão…</span>
+    </div>
+  </div>
+</div>
+
 <!-- HERO -->
 <div class="hero">
   <div class="hero-grid"></div>
@@ -1687,6 +1803,58 @@ function copyCommand() {
     }, 2500);
   });
 }
+
+// ─── SHARKLABS TOOLBOX — LATEST RELEASE ASSETS ───
+const TOOLBOX_REPO = 'TheVoidSharkLabs/SharkLabs-Toolbox';
+let toolboxAssets = [];
+
+async function loadToolboxAssets() {
+  const select = document.getElementById('toolboxSelect');
+  const btn = document.getElementById('toolboxDownloadBtn');
+  const status = document.getElementById('toolboxStatus');
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${TOOLBOX_REPO}/releases/latest`, {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    });
+    if (!res.ok) throw new Error('Falha ao consultar o GitHub (' + res.status + ')');
+    const data = await res.json();
+
+    // Only show installer-type assets (.exe / .msi)
+    toolboxAssets = (data.assets || []).filter(a => /\.(exe|msi)$/i.test(a.name));
+
+    if (!toolboxAssets.length) throw new Error('Nenhum instalador encontrado no último release');
+
+    select.innerHTML = '';
+    toolboxAssets.forEach((asset, i) => {
+      const opt = document.createElement('option');
+      const sizeMb = (asset.size / (1024 * 1024)).toFixed(1);
+      const kind = /\.msi$/i.test(asset.name) ? 'MSI' : 'EXE';
+      opt.value = i;
+      opt.textContent = `${asset.name} · ${kind} · ${sizeMb} MB`;
+      select.appendChild(opt);
+    });
+
+    select.disabled = false;
+    btn.disabled = false;
+    status.textContent = `${data.tag_name} · atualizado`;
+    status.classList.add('ok');
+  } catch (err) {
+    select.innerHTML = '<option>Indisponível no momento</option>';
+    status.textContent = 'erro ao carregar releases';
+    status.classList.add('err');
+    console.error('Toolbox releases error:', err);
+  }
+}
+
+function downloadToolboxAsset() {
+  const select = document.getElementById('toolboxSelect');
+  const asset = toolboxAssets[select.value];
+  if (!asset) return;
+  window.open(asset.browser_download_url, '_blank');
+}
+
+loadToolboxAssets();
 
 // FPS CHART
 const ctx = document.getElementById('growthChart').getContext('2d');
